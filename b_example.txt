@@ -59,3 +59,43 @@
 000099 indev    byte    x'F3'
 00009B OUTDEV   BYTE    X'05'
 00009D          end     prog
+
+End of first pass
+P1
+126
+DONE
+58
+P2
+129
+read
+102
+OUTDEV
+155
+LOOP
+44
+I
+133
+J
+134
+indev
+153
+prog
+0
+CURRENT
+150
+WRITE
+114
+TURNS
+147
+TEMP
+132
+PASS
+12
+SWAP
+81
+STRING
+135
+EOF
+144
+
+Succsessful Assembly
