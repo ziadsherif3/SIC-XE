@@ -63,23 +63,23 @@
 End of first pass
 value         name
 ------------------
-  0   prog
- 12   PASS
- 44   LOOP
- 58   DONE
- 81   SWAP
-102   read
-114   WRITE
-126   P1
-129   P2
-132   TEMP
-133   I
-134   J
-135   STRING
-144   EOF
-147   TURNS
-150   CURRENT
-153   indev
-155   OUTDEV
+  0        prog
+ 12        PASS
+ 44        LOOP
+ 58        DONE
+ 81        SWAP
+102        read
+114        WRITE
+126        P1
+129        P2
+132        TEMP
+133        I
+134        J
+135        STRING
+144        EOF
+147        TURNS
+150        CURRENT
+153        indev
+155        OUTDEV
 
 Succsessful Assembly
