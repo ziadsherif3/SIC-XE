@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Main",
+            "request": "launch",
+            "mainClass": "Assembling.Main",
+            "projectName": "SIC-XE Assembler & Simulator"
+        }
+    ]
+}

@@ -1,0 +1,24 @@
+000000          Start   0
+000000 prog     LDX     #0
+000003          LDA     #0
+000006          LDCH    SRCHKEY
+000009          RMO     A,T
+00000B          LDCH    EOF
+00000E          RMO     A,S
+000010 LOOP     LDCH    STRING,X
+000013          COMPR   A,S
+000015          JEQ     UNFND
+000018          COMPR   A,T
+00001A          JEQ     FOUND
+00001D          TIX     #100   
+000020          J       LOOP
+000023 FOUND    RMO     X,A
+000025          ADD     #STRING
+000028          J       EXIT
+00002B UNFND    LDA     #0
+00002E          SUB     #1
+000031 EXIT     J       *
+000034 STRING   BYTE    C'HELLO WORLD!*'
+000037 EOF      BYTE    C'*'
+00003A SRCHKEY  BYTE    C'B'
+00003D          end     prog

@@ -1,0 +1,24 @@
+         Start   0
+prog     LDX     #0
+         LDA     #0
+         LDCH    SRCHKEY
+         RMO     A,T
+         LDCH    EOF
+         RMO     A,S
+LOOP     LDCH    STRING,X
+         COMPR   A,S
+         JEQ     UNFND
+         COMPR   A,T
+         JEQ     FOUND
+         TIX     #100   
+         J       LOOP
+FOUND    RMO     X,A
+         ADD     #STRING
+         J       EXIT
+UNFND    LDA     #0
+         SUB     #1
+EXIT     J       *
+STRING   BYTE    C'HELLO WORLD!*'
+EOF      BYTE    C'*'
+SRCHKEY  BYTE    C'B'
+         end     prog
