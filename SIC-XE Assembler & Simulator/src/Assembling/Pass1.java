@@ -2,6 +2,7 @@ package Assembling;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.HashMap;
 
 public class Pass1 {
@@ -9,7 +10,6 @@ public class Pass1 {
     public Pass1() {
     }
 
-    
     public static String hexafy(int num) {
         String str = Integer.toHexString(num).toUpperCase();
         while (str.length() < 6) {
@@ -17,7 +17,7 @@ public class Pass1 {
         }
         return str;
     }
-    
+
     public static void flow(BufferedReader br, HashMap symtbl, BufferedWriter wr, HashMap littbl) throws IOException {
         String line;
         int num=0;
