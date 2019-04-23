@@ -61,41 +61,25 @@
 00009D          end     prog
 
 End of first pass
-P1
-126
-DONE
-58
-P2
-129
-read
-102
-OUTDEV
-155
-LOOP
-44
-I
-133
-J
-134
-indev
-153
-prog
-0
-CURRENT
-150
-WRITE
-114
-TURNS
-147
-TEMP
-132
-PASS
-12
-SWAP
-81
-STRING
-135
-EOF
-144
+value         name
+------------------
+  0   prog
+ 12   PASS
+ 44   LOOP
+ 58   DONE
+ 81   SWAP
+102   read
+114   WRITE
+126   P1
+129   P2
+132   TEMP
+133   I
+134   J
+135   STRING
+144   EOF
+147   TURNS
+150   CURRENT
+153   indev
+155   OUTDEV
 
 Succsessful Assembly

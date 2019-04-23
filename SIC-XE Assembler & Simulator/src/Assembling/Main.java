@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
@@ -23,14 +24,19 @@ public class Main {
         Pass1.flow(br, symtbl, writer, littbl);
         writer.write("\nEnd of first pass\n");
         Set Table = symtbl.entrySet();
-
+        int ite=0;
+        String[][] division = new String[Table.size()][2];
         for(Object i : Table)
         {
-            String[] division = i.toString().split("=");
-            for(String w : division)
-            {
-                writer.write(w);
-            }
+            division[ite++] = i.toString().split("=");
+        }
+        Arrays.sort(division, (a, b) -> Integer.compare(Integer.parseInt(a[1]), Integer.parseInt(b[1])));
+        writer.write("value         name\n");
+        writer.write("------------------\n");
+        for( String[] x : division)
+        {
+            String str = String.format("%3s",x[1]) +"        " + String.format("%s",x[0]);
+            writer.write(str);
             writer.write("\n");
         }
         Pass2.flow(br, writer);
