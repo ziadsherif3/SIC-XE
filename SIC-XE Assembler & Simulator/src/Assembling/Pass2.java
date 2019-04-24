@@ -24,7 +24,6 @@ public class Pass2 {
                 break;
             }
         }
-        wr.write("\nSuccsessful Assembly");
         return;
     }
 

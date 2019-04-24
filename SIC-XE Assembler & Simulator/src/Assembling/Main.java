@@ -43,6 +43,10 @@ public class Main {
         if (Pass1.errorFlag != 1) {
             writer.write("\nSuccsessful Assembly");
         }
+        else {
+            writer.write("\nIncomplete Assembly");
+
+        }
         br.close();
         writer.close();
     }

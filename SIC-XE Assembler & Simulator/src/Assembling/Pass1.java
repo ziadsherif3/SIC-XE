@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 public class Pass1 {
     public static int LOCCTR = 0;
+    public static int errorFlag =0;
     public Pass1() {
     }
 
@@ -54,6 +55,7 @@ public class Pass1 {
         }
         if (flag != 1) {
             wr.write("error [13] : ‘missing END statement '\n");
+            errorFlag =1;
         }
         // assign storage locations to literals in pool
         // reset copy file
@@ -79,6 +81,7 @@ public class Pass1 {
                 symtbl.putIfAbsent(label[0], LOCCTR);
             } else {
                 wr.write("error [04] : 'duplicate label definition:'  " + label[0] + " 'is already defined'\n");
+                errorFlag =1;
             }
         }
         if (operation.equals("end")) {
