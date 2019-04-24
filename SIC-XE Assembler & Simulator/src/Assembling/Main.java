@@ -40,6 +40,9 @@ public class Main {
             writer.write("\n");
         }
         Pass2.flow(br, writer);
+        if (Pass1.errorFlag != 1) {
+            writer.write("\nSuccsessful Assembly");
+        }
         br.close();
         writer.close();
     }

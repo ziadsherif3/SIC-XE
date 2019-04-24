@@ -1,7 +1,7 @@
 000000          Start   0
 000000 prog     LDX     #0
 000003 prog     LDT     #1
-error [04] : 'duplicate label definition' : prog 'is already defined'
+error [04] : 'duplicate label definition:'  prog 'is already defined'
 000006          LDA     #0
 000009          STA     CURRENT
 00000C PASS     LDCH    STRING,X
