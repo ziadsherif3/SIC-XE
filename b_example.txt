@@ -1,6 +1,7 @@
 000000          Start   0
 000000 prog     LDX     #0
-000003          LDT     #1
+000003 prog     LDT     #1
+error [04] : 'duplicate label definition' : prog 'is already defined'
 000006          LDA     #0
 000009          STA     CURRENT
 00000C PASS     LDCH    STRING,X
@@ -58,7 +59,7 @@
 000096 CURRENT  RESW    1
 000099 indev    byte    x'F3'
 00009B OUTDEV   BYTE    X'05'
-00009D          end     prog
+error [13] : ‘missing END statement '
 
 End of first pass
 value         name

@@ -1,6 +1,6 @@
          Start   0
 prog     LDX     #0
-         LDT     #1
+prog     LDT     #1
          LDA     #0
          STA     CURRENT
 PASS     LDCH    STRING,X
@@ -58,4 +58,3 @@ TURNS    RESW    1
 CURRENT  RESW    1
 indev    byte    x'F3'
 OUTDEV   BYTE    X'05'
-         end     prog

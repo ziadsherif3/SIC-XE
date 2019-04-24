@@ -32,22 +32,28 @@ public class Pass1 {
             LOCCTR = Integer.parseInt(operand);
             wr.write(hexafy(LOCCTR) + ' ' + line + '\n');
         } else {
-            num = doLine(line, symtbl, littbl);
+            num = doLine(line, symtbl, littbl, wr);
         }
         if (num == 1) {
             // assign storage locations to literals in pool
             // reset copy file
             return;
         }
+        int flag = 0;
         while ((line = br.readLine()) != null) {
             while (line.charAt(0) == '.') {
                 wr.write("       " + line + '\n');
                 line = br.readLine();
             }
             wr.write(hexafy(LOCCTR) + ' ' + line + '\n');
-            num = doLine(line, symtbl, littbl);
-            if (num == 1)
+            num = doLine(line, symtbl, littbl, wr);
+            if (num == 1) {
+                flag = 1;
                 break;
+            }
+        }
+        if (flag != 1) {
+            wr.write("error [13] : ‘missing END statement '\n");
         }
         // assign storage locations to literals in pool
         // reset copy file
@@ -55,7 +61,7 @@ public class Pass1 {
         return;
     }
 
-    public static int doLine(String line, HashMap symtbl, HashMap littbl) throws IOException {
+    public static int doLine(String line, HashMap symtbl, HashMap littbl, BufferedWriter wr) throws IOException {
         String first = line.substring(0, 7);
         String operation;
         String operand;
@@ -68,7 +74,12 @@ public class Pass1 {
         }
         String label[] = first.split(" ");
         if (label.length > 0) {
-            symtbl.putIfAbsent(label[0], LOCCTR);
+            Object in = symtbl.get(label[0]);
+            if (in == null) {
+                symtbl.putIfAbsent(label[0], LOCCTR);
+            } else {
+                wr.write("error [04] : 'duplicate label definition:'  " + label[0] + " 'is already defined'\n");
+            }
         }
         if (operation.equals("end")) {
             return 1;
