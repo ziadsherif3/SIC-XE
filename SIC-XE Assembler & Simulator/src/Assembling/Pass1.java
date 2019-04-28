@@ -19,7 +19,8 @@ public class Pass1 {
         return str;
     }
 
-    public static void flow(BufferedReader br, HashMap symtbl, BufferedWriter wr, HashMap littbl) throws IOException {
+    @SuppressWarnings("rawtypes")
+	public static void flow(BufferedReader br, HashMap symtbl, BufferedWriter wr, HashMap littbl) throws IOException {
         String line;
         int num=0;
         line = br.readLine();
@@ -54,7 +55,7 @@ public class Pass1 {
             }
         }
         if (flag != 1) {
-            wr.write("error [13] : ‘missing END statement '\n");
+            wr.write("error [13] : 'missing END statement' '\n");
             errorFlag =1;
         }
         // assign storage locations to literals in pool
@@ -63,7 +64,8 @@ public class Pass1 {
         return;
     }
 
-    public static int doLine(String line, HashMap symtbl, HashMap littbl, BufferedWriter wr) throws IOException {
+    @SuppressWarnings("rawtypes")
+	public static int doLine(String line, HashMap symtbl, HashMap littbl, BufferedWriter wr) throws IOException {
         String first = line.substring(0, 7);
         String operation;
         String operand;
