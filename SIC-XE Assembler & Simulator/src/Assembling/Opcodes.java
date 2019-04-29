@@ -65,5 +65,14 @@ public class Opcodes {
         optbl.put("TIX", "2C");
         optbl.put("TIXR", "B8");
         optbl.put("WD", "DC");
+        optbl.put("RESB", "DC");
+        optbl.put("RESW", "DC");
+        optbl.put("BYTE", "DC");
+        optbl.put("WORD", "00");
+        optbl.put("ORG", "00");
+        optbl.put("EQU", "00");
+        optbl.put("BASE", "00");
+        optbl.put("NOBASE", "00");
+        optbl.put("LTORG", "00");
     }
 }

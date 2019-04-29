@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        String fileName = "a_example.txt";
+        String fileName = "c_example.txt";
         String fileName2 = "b_example.txt";
         File file = new File(fileName);
         FileReader fr = new FileReader(file);
@@ -21,6 +21,7 @@ public class Main {
         BufferedWriter writer = new BufferedWriter(new FileWriter(fileName2));
         HashMap symtbl = new HashMap<String, Integer>();
         HashMap littbl = new HashMap<Integer, Integer>();
+        Opcodes.initializeTable();
         Pass1.flow(br, symtbl, writer, littbl);
         writer.write("\nEnd of first pass\n");
         Set Table = symtbl.entrySet();
