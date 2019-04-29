@@ -31,7 +31,7 @@ public class Pass1 {
         String operation = line.substring(9, 14).trim().toLowerCase();
         String operand = line.substring(17, line.length());
         if (operation.equals("start")) {
-            LOCCTR = Integer.parseInt(operand);
+            LOCCTR = Integer.parseInt(operand, 16);
             wr.write(hexafy(LOCCTR) + ' ' + line + '\n');
         } else {
             num = doLine(line, symtbl, littbl, wr);
@@ -76,6 +76,7 @@ public class Pass1 {
             operation = line.substring(9, line.length()).toLowerCase();
             operand = null;
         }
+
         String label[] = first.split(" ");
         if (label.length > 0) {
             Object in = symtbl.get(label[0]);
@@ -84,14 +85,78 @@ public class Pass1 {
             } else {
                 wr.write("error [04] : 'duplicate label definition:'  " + label[0] + " 'is already defined'\n");
                 errorFlag =1;
+            }        
+            if (line.charAt(0) == ' ') {
+                wr.write("error [15] : '1st charcter of label can not be blank'\n");
+                errorFlag = 1;
             }
         }
+        // errors
+        if (operand != null) {
+            if (operand.split(" ").length > 1) {
+                wr.write("error [18] : 'operarnd field can not contain spaces in the middle'\n");
+                errorFlag = 1;
+            }
+        }
+        if (operation.split(" ").length > 1) {
+            wr.write("error [17] : 'operartion field can not contain spaces in the middle'\n");
+            errorFlag = 1;
+        }
+        if (label.length > 1) {
+            wr.write("error [16] : 'label field can not contain spaces in the middle'\n");
+            errorFlag = 1;
+        }
+        if (line.charAt(8) != ' ') {
+            wr.write("error [14] : '9th character of instruction must be blank, label ends at 8, operation starts at 10 '\n");
+            errorFlag = 1;
+        }
+        if (line.length() > 16) {
+            if (line.charAt(15) != ' ' || line.charAt(16) != ' ') {
+                wr.write(
+                        "error [19] : '16th and 17th characters of instruction must be blank, operation ends at 16, operation starts at 19 '\n");
+                errorFlag = 1;
+            }
+        }
+        if (line.charAt(9) == ' ') {
+            wr.write("error [20] : '1st character of operation can not be blank'\n");
+            errorFlag = 1;
+        }
+        if (operand != null) {
+            if (line.charAt(17) == ' ') {
+                wr.write("error [21] : '1st character of operand can not be blank'\n");
+                errorFlag = 1;
+            }
+        }
+        if (line.length() > 35 && line.charAt(35) != '.') {
+            wr.write("error [22] : 'operand must end at 35th character'\n");
+            errorFlag = 1;
+        }
+
         if (operation.equals("end")) {
+            if (label.length > 0) {
+                wr.write("error [23] : 'END operation can not have a label'\n");
+                errorFlag = 1;
+            }
             return 1;
         }
+        if (Opcodes.optbl.get(operation) == null) {
+            wr.write("error [26] : 'Unrecognized operation code'\n");
+                errorFlag = 1;
+        }
         switch (operation) {
+        case "rsub": {
+            if (operand != null) {
+                wr.write("error [25] : 'RSUB operation can not have an operand'\n");
+                errorFlag = 1;
+            }
+            break;
+        }
         case "org": {
             LOCCTR = Integer.parseInt(operand);
+            if (label.length > 0) {
+                wr.write("error [24] : 'ORG operation can not have a label'\n");
+                errorFlag = 1;
+            }
             break;
         }
         case "resb": {

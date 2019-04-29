@@ -1,11 +1,11 @@
          Start   0
-prog     LDX     #0
+prog     LDX    t#0
 prog     LDT     #1
-         LDA     #0
+         tLDA     #0
          STA     CURRENT
-PASS     LDCH    STRING,X
-         RMO     A,S
-         LDA     #STRING
+PASS      LDCH   STRING,X
+         RMO      A,S
+         LDA     #STRINGggggggggggggggg
          ADDR    X,A
          STA     P1
          ADDR    T,X
