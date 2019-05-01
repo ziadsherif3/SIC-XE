@@ -1,106 +1,62 @@
-       .2345678901234567890                                              
-000000          Start   0
-000000 prog
-error [99] : 'There must be an operation in each line'
-000000 prog     LDX     #0
-000003          LDT     #1
-000006          LDA     #0
-000009          STA     T,A
-error [97] : 'This instruction can not have two operands unless in case of indexed addressing mode'
-00000C PASS     LDCH    STRING,X
-00000F          RMO     A,S,T
-error [23] : 'Can not have more than two operands'
-000011          LDA     #STRING
-error [10] : 'Immediate operand is not a number'
-000014          ADDR    X,W
-error [12] : 'Incorrect register address'
-000016          STA
-error [98] : 'Format 3 operations must have an operand'
-000019          ADDR    T,X
-00001B          LDCH    STRING,X
-00001E          +COMP
-error [98] : 'Format 4 operations must have an operand'
-000022          JEQ     DONE
-000025          COMPR   A,S
-000027          JLT     LOOP
-00002A          J       PASS
-00002D LOOP     LDA     #STRING
-error [10] : 'Immediate operand is not a number'
-000030          ADDR    X,A
-000032          STA     P2
-000035          JSUB    SWAP
-000038          J       PASS
-00003B DONE     SUBR    T,X
-00003D          STX     TURNS
-000040          LDX     CURRENT
-000043          TIX     TURNS
-000046          STX     CURRENT
-000049          LDX     #0
-00004C          JLT     PASS
-00004F          J       *
-       .
-000052 SWAP     LDCH    @P1
-000055          STCH    TEMP
-000058          LDCH    @P2
-00005B          STCH    @P1
-00005E          LDCH    TEMP
-000061          STCH    @P2
-000064          RSUB
-       .
-000067 read     td      indev
-00006A          jeq     read
-00006D          rd      indev
-000070          rsub
-       .
-000073 WRITE    TD      OUTDEV
-000076          JEQ     WRITE
-000079          WD      OUTDEV
-00007C          RSUB
-       .
-00007F P1       RESX    1
-error [08] : 'Unrecognized operation code'
-000082 P2       RESW    1
-000085 TEMP     RESB    1
-000086 I        RESB    1
-000087 J        RESB
-error [30] : 'Using mnemonics as labels is not allowed'
-error [98] : 'RESB operation must have an operand'
-000087 STRING   BYTE    Y'5319844444444247*'
-error [22] : 'operand must end at 35th character'
-error [29] : 'BYTE operand not a char string or hexadecimal'
-000087 EOF      WORD    #42
-00008A TURNS    RESW    1
-00008D CURRENT  RESW    1
-000090 indev    byte    x'FZ3'
-error [23] : 'Error in operand'
-000092 OUTDEV   BYTE    X'05'
-000093 label    org
-error [98] : 'ORG operation must have an operand'
-error [05] : 'ORG operation can not have a label'
-000093 label    end
-error [04] : 'duplicate label definition:'  label 'is already defined'
-error [05] : 'END operation can not have a label'
+001000 COPY     START   1000
+001000 FIRST    STL     RETADR
+001003 CLOOP    JSUB    RDREC
+001006          LDA     LENGTH
+001009          COMP    =0
+00100C          JEQ     ENDFIL
+00100F          JSUB    WRREC
+001012          J       CLOOP
+001015 ENDFIL   LDA     =C'EOF'
+001018          STA     BUFFER
+00101B          LDA     THREE
+00101E          STA     LENGTH
+001021          JSUB    WRREC
+001024          LDL     RETADR
+001027          RSUB
+00102A THREE    WORD    3
+00102D RETADR   EQU     1
+00102D LENGTH   RESW    1
+001030 BUFFER   RESW    4096
+004030 RDREC    LDX     =X’00’
+004033          LDA     =X’00’
+004036 RLOOP    TD      INPUT
+004039          JEQ     RLOOP
+00403C          RD      INPUT
+00403F          COMP    =X’00’
+004042          JEQ     EXIT
+004045          STCH    BUFFER,X
+004048          TIX     MAXLEN
+00404B          JLT     RLOOP
+00404E EXIT     STX     LENGTH
+004051          RSUB
+004054 INPUT    BYTE    X'F1'
+004055 MAXLEN   EQU     4096
+004055 WRREC    LDX     =X’00’
+004058 WLOOP    TD      =X'05'
+00405B          JEQ     WLOOP
+00405E          LDCH    BUFFER,X
+004061          WD      =X'05'
+004064          TIX     LENGTH
+004067          JLT     WLOOP
+00406A          RSUB
+00406D          END     FIRST
 
 End of first pass
 value         name
 ------------------
-  0        prog
- 12        pass
- 45        loop
- 59        done
- 82        swap
-103        read
-115        write
-127        p1
-130        p2
-133        temp
-134        i
-135        string
-135        eof
-138        turns
-141        current
-144        indev
-146        outdev
-147        label
+4096        first
+4099        cloop
+4117        endfil
+4138        three
+4141        retadr
+4141        length
+4144        buffer
+16432        rdrec
+16438        rloop
+16462        exit
+16468        input
+16469        wrrec
+16469        maxlen
+16472        wloop
 
-Incomplete Assembly
+Succsessful Assembly

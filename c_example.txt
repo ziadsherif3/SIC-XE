@@ -1,64 +1,42 @@
-.2345678901234567890                                              
-         Start   0
-prog
-prog     LDX     #0
-         LDT     #1
-         LDA     #0
-         STA     T,A
-PASS     LDCH    STRING,X
-         RMO     A,S,T
-         LDA     #STRING
-         ADDR    X,W
-         STA
-         ADDR    T,X
-         LDCH    STRING,X
-         +COMP
-         JEQ     DONE
-         COMPR   A,S
-         JLT     LOOP
-         J       PASS
-LOOP     LDA     #STRING
-         ADDR    X,A
-         STA     P2
-         JSUB    SWAP
-         J       PASS
-DONE     SUBR    T,X
-         STX     TURNS
-         LDX     CURRENT
-         TIX     TURNS
-         STX     CURRENT
-         LDX     #0
-         JLT     PASS
-         J       *
-.
-SWAP     LDCH    @P1
-         STCH    TEMP
-         LDCH    @P2
-         STCH    @P1
-         LDCH    TEMP
-         STCH    @P2
+COPY     START   1000
+FIRST    STL     RETADR
+CLOOP    JSUB    RDREC
+         LDA     LENGTH
+         COMP    =0
+         JEQ     ENDFIL
+         JSUB    WRREC
+         J       CLOOP
+ENDFIL   LDA     =C'EOF'
+         STA     BUFFER
+         LDA     THREE
+         STA     LENGTH
+         JSUB    WRREC
+         LDL     RETADR
          RSUB
-.
-read     td      indev
-         jeq     read
-         rd      indev
-         rsub
-.
-WRITE    TD      OUTDEV
-         JEQ     WRITE
-         WD      OUTDEV
+THREE    WORD    3
+RETADR   EQU     1
+LENGTH   RESW    1
+BUFFER   RESW    4096
+RDREC    LDX     =X’00’
+         LDA     =X’00’
+RLOOP    TD      INPUT
+         JEQ     RLOOP
+         RD      INPUT
+         COMP    =X’00’
+         JEQ     EXIT
+         STCH    BUFFER,X
+         TIX     MAXLEN
+         JLT     RLOOP
+EXIT     STX     LENGTH
          RSUB
-.
-P1       RESX    1
-P2       RESW    1
-TEMP     RESB    1
-I        RESB    1
-J        RESB
-STRING   BYTE    Y'5319844444444247*'
-EOF      WORD    #42
-TURNS    RESW    1
-CURRENT  RESW    1
-indev    byte    x'FZ3'
-OUTDEV   BYTE    X'05'
-label    org
-label    end
+INPUT    BYTE    X'F1'
+MAXLEN   EQU     4096
+WRREC    LDX     =X’00’
+WLOOP    TD      =X'05'
+         JEQ     WLOOP
+         LDCH    BUFFER,X
+         WD      =X'05'
+         TIX     LENGTH
+         JLT     WLOOP
+         RSUB
+         END     FIRST

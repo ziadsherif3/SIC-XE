@@ -243,7 +243,7 @@ public class Pass1 {
                 wr.write("error [98] : 'ORG operation must have an operand'\n");
                 errorFlag = 1;
             } else {
-                LOCCTR = Integer.parseInt(operand);
+                LOCCTR = Integer.parseInt(operand.trim(), 16);
             }
             if (label.length > 0) {
                 wr.write("error [05] : 'ORG operation can not have a label'\n");
