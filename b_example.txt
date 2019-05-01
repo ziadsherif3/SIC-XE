@@ -1,22 +1,88 @@
-       .2345678901234567890
-0003A0 TERMPROJ START 	 3A0
-       .THIS IS A COMMENT LINE
-0003A0          +RMO
-error [07] : 'type 2 format operation can not have a + prefix'
-0003A2 LBL1     +BYTE   C'ABCDEF'
-0003A8 LBL2     RESB    4
-0003AC LBL2     RESW    1
-0003AF TOP      LDA     ZERO
-error [09] : 'undefined symbol in operand'
-0003B2          LDX     #INDEX
+       .2345678901234567890                                              
+000000          Start
+000000 prog     LDX     #0
+000003          LDT     #1
+000006          LDA     #0
+000009          STA     CURRENT
+00000C PASS     LDCH    STRING,X
+00000F          RMO     A,S
+000011          LDA     #STRING
 error [10] : 'Immediate operand is not a number'
-error [13] : 'missing END statement' '
+000014          ADDR    X,A
+000016          STA     P1
+000019          ADDR    T,X
+00001B          LDCH    STRING,X
+00001E          COMP    EOF
+000021          JEQ     DONE
+000024          COMPR   A,S
+000026          JLT     LOOP
+000029          J       PASS
+00002C LOOP     LDA     #STRING
+error [10] : 'Immediate operand is not a number'
+00002F          ADDR    X,A
+000031          STA     P2
+000034          JSUB    SWAP
+000037          J       PASS
+00003A DONE     SUBR    T,X
+00003C          STX     TURNS
+00003F          LDX     CURRENT
+000042          TIX     TURNS
+000045          STX     CURRENT
+000048          LDX     #0
+00004B          JLT     PASS
+00004E          J       *
+       .
+000051 SWAP     LDCH    @P1
+000054          STCH    TEMP
+000057          LDCH    @P2
+00005A          STCH    @P1
+00005D          LDCH    TEMP
+000060          STCH    @P2
+000063          RSUB
+       .
+000066 read     td      indev
+000069          jeq     read
+00006C          rd      indev
+00006F          rsub
+       .
+000072 WRITE    TD      OUTDEV
+000075          JEQ     WRITE
+000078          WD      OUTDEV
+00007B          RSUB
+       .
+00007E P1       RESW    1
+000081 P2       RESW    1
+000084 TEMP     RESB    1
+000085 I        RESB    1
+000086 J        RESB    1
+error [30] : 'Using mnemonics as labels is not allowed'
+000087 STRING   BYTE    C'53198247*'
+000090 EOF      WORD    #42
+000093 TURNS    RESW    1
+000096 CURRENT  RESW    1
+000099 indev    byte    x'F3'
+00009A OUTDEV   BYTE    X'05'
+00009B          end     prog
 
 End of first pass
 value         name
 ------------------
-930        lbl1
-936        lbl2
-943        top
+  0        prog
+ 12        pass
+ 44        loop
+ 58        done
+ 81        swap
+102        read
+114        write
+126        p1
+129        p2
+132        temp
+133        i
+135        string
+144        eof
+147        turns
+150        current
+153        indev
+154        outdev
 
 Incomplete Assembly
