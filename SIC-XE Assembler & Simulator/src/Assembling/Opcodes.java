@@ -4,8 +4,10 @@ import java.util.HashMap;
 
 public class Opcodes {
     public static HashMap<String, String> optbl = new HashMap<String, String>();
+    public static HashMap<String, String> frmttbl = new HashMap<String, String>();
 
     public static void initializeTable() {
+        // Initialize optbl
         optbl.put("ADD", "18");
         optbl.put("ADDF", "58");
         optbl.put("ADDR", "90");
@@ -74,5 +76,74 @@ public class Opcodes {
         optbl.put("BASE", "00");
         optbl.put("NOBASE", "00");
         optbl.put("LTORG", "00");
+        // Initialize optbl frmttbl
+        frmttbl.put("ADD", "3,4");
+        frmttbl.put("ADDF", "3,4");
+        frmttbl.put("ADDR", "2");
+        frmttbl.put("AND", "3,4");
+        frmttbl.put("CLEAR", "2");
+        frmttbl.put("COMP", "3,4");
+        frmttbl.put("COMPF", "3,4");
+        frmttbl.put("COMPR", "2");
+        frmttbl.put("DIV", "3,4");
+        frmttbl.put("DIVF", "3,4");
+        frmttbl.put("DIVR", "2");
+        frmttbl.put("FIX", "1");
+        frmttbl.put("FLOAT", "1");
+        frmttbl.put("HIO", "1");
+        frmttbl.put("J", "3,4");
+        frmttbl.put("JEQ", "3,4");
+        frmttbl.put("JGT", "3,4");
+        frmttbl.put("JLT", "3,4");
+        frmttbl.put("JSUB", "3,4");
+        frmttbl.put("LDA", "3,4");
+        frmttbl.put("LDB", "3,4");
+        frmttbl.put("LDCH", "3,4");
+        frmttbl.put("LDF", "3,4");
+        frmttbl.put("LDL", "3,4");
+        frmttbl.put("LDS", "3,4");
+        frmttbl.put("LDT", "3,4");
+        frmttbl.put("LDX", "3,4");
+        frmttbl.put("LPS", "3,4");
+        frmttbl.put("MUL", "3,4");
+        frmttbl.put("MULF", "3,4");
+        frmttbl.put("MULR", "2");
+        frmttbl.put("NORM", "1");
+        frmttbl.put("OR", "3,4");
+        frmttbl.put("RD", "3,4");
+        frmttbl.put("RMO", "2");
+        frmttbl.put("RSUB", "3,4");
+        frmttbl.put("SHIFTL", "2");
+        frmttbl.put("SHIFTR", "2");
+        frmttbl.put("SIO", "1");
+        frmttbl.put("SSK", "3,4");
+        frmttbl.put("STA", "3,4");
+        frmttbl.put("STB", "3,4");
+        frmttbl.put("STCH", "3,4");
+        frmttbl.put("STF", "3,4");
+        frmttbl.put("STI", "3,4");
+        frmttbl.put("STL", "3,4");
+        frmttbl.put("STS", "3,4");
+        frmttbl.put("STSW", "3,4");
+        frmttbl.put("STT", "3,4");
+        frmttbl.put("STX", "3,4");
+        frmttbl.put("SUB", "3,4");
+        frmttbl.put("SUBF", "3,4");
+        frmttbl.put("SUBR", "2");
+        frmttbl.put("SVC", "2");
+        frmttbl.put("TD", "3,4");
+        frmttbl.put("TIO", "1");
+        frmttbl.put("TIX", "3,4");
+        frmttbl.put("TIXR", "2");
+        frmttbl.put("WD", "3,4");
+        frmttbl.put("RESB", "DC");
+        frmttbl.put("RESW", "DC");
+        frmttbl.put("BYTE", "DC");
+        frmttbl.put("WORD", "00");
+        frmttbl.put("ORG", "00");
+        frmttbl.put("EQU", "00");
+        frmttbl.put("BASE", "00");
+        frmttbl.put("NOBASE", "00");
+        frmttbl.put("LTORG", "00");
     }
 }

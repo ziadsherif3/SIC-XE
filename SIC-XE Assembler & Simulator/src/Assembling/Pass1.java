@@ -109,8 +109,24 @@ public class Pass1 {
                 return 0;
         }
         if (operation.charAt(0) == '+') {
-            prefixFlag = 1;
             operation = operation.substring(1, operation.length());
+            String allowedFrmts = Opcodes.frmttbl.get(operation);
+            if(allowedFrmts.equals(null)){
+                wr.write("error [08] : 'Unrecognized operation code'\n");
+                errorFlag = 1;
+            }
+            boolean allowedFrmt4 = false;
+            for(char c : allowedFrmts.toCharArray()){
+                if(c == '4'){
+                    allowedFrmt4 = true;
+                    break;
+                }
+            }
+            if(!allowedFrmt4){
+                wr.write("error [24] : 'Format 4 isn't allowed with this operation'\n");
+                errorFlag = 1;
+            }
+            prefixFlag = 1;
         }
         String label[] = first.split(" ");
         if (label.length > 0) {
