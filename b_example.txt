@@ -8,7 +8,8 @@ error [99] : 'There must be an operation in each line'
 010006          LDA     #0
 010009          STA     CURRENT
 01000C PASS     LDCH    STRING,X
-01000F          RMO     A,S
+01000F          RMO     A,S,T
+error [23] : 'Can not have more than two operands'
 010011          LDA     #STRING
 error [10] : 'Immediate operand is not a number'
 010014          ADDR    X,A
@@ -53,19 +54,29 @@ error [10] : 'Immediate operand is not a number'
 010078          WD      OUTDEV
 01007B          RSUB
        .
-01007E P1       RESW    1
+01007E P1       RESX    1
+error [08] : 'Unrecognized operation code'
 010081 P2       RESW    1
 010084 TEMP     RESB    1
-010085 I        RESB    1
-010086 J        RESB    1
+010085 I        RESB    1333333
+error [32] : 'RESB operand can not be larger than 4 decimal places'
+1558DA J        RESB
 error [30] : 'Using mnemonics as labels is not allowed'
-010087 STRING   BYTE    C'53198247*'
-010090 EOF      WORD    #42
-010093 TURNS    RESW    1
-010096 CURRENT  RESW    1
-010099 indev    byte    x'F3'
-01009A OUTDEV   BYTE    X'05'
-error [13] : 'missing END statement' '
+error [98] : 'RESB operation must have an operand'
+1558DA STRING   BYTE    C'5319844444444247*'
+error [22] : 'operand must end at 35th character'
+error [31] : 'Length of char string can not exceed 15'
+1558DA EOF      WORD    #42
+1558DD TURNS    RESW    1
+1558E0 CURRENT  RESW    1
+1558E3 indev    byte    x'F3'
+1558E4 OUTDEV   BYTE    X'05'
+1558E5 label    org
+error [98] : 'ORG operation must have an operand'
+error [05] : 'ORG operation can not have a label'
+1558E5 label    end
+error [04] : 'duplicate label definition:'  label 'is already defined'
+error [05] : 'END operation can not have a label'
 
 End of first pass
 value         name
@@ -81,11 +92,12 @@ value         name
 65665        p2
 65668        temp
 65669        i
-65671        string
-65680        eof
-65683        turns
-65686        current
-65689        indev
-65690        outdev
+1399002        string
+1399002        eof
+1399005        turns
+1399008        current
+1399011        indev
+1399012        outdev
+1399013        label
 
 Incomplete Assembly

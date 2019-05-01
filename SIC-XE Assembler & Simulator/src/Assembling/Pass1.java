@@ -210,8 +210,9 @@ public class Pass1 {
             {
                 wr.write("error [98] : 'ORG operation must have an operand'\n");
                 errorFlag = 1;
+            } else {
+                LOCCTR = Integer.parseInt(operand);
             }
-            LOCCTR = Integer.parseInt(operand);
             if (label.length > 0) {
                 wr.write("error [05] : 'ORG operation can not have a label'\n");
                 errorFlag = 1;
@@ -223,13 +224,13 @@ public class Pass1 {
             {
                 wr.write("error [98] : 'RESB operation must have an operand'\n");
                 errorFlag = 1;
+            } else {
+                if (operand.length() > 4) {
+                    wr.write("error [32] : 'RESB operand can not be larger than 4 decimal places'\n");
+                    errorFlag = 1;
+                }
+                LOCCTR += Integer.parseInt(operand);
             }
-            if(operand.length() >4)
-            {
-                wr.write("error [32] : 'RESB operand can not be larger than 4 decimal places'\n");
-                errorFlag = 1; 
-            }
-            LOCCTR += Integer.parseInt(operand);
             break;
         }
         case "equ": {

@@ -6,7 +6,7 @@ prog     LDX     #0
          LDA     #0
          STA     CURRENT
 PASS     LDCH    STRING,X
-         RMO     A,S
+         RMO     A,S,T
          LDA     #STRING
          ADDR    X,A
          STA     P1
@@ -49,14 +49,16 @@ WRITE    TD      OUTDEV
          WD      OUTDEV
          RSUB
 .
-P1       RESW    1
+P1       RESX    1
 P2       RESW    1
 TEMP     RESB    1
-I        RESB    1
-J        RESB    1
-STRING   BYTE    C'53198247*'
+I        RESB    1333333
+J        RESB
+STRING   BYTE    C'5319844444444247*'
 EOF      WORD    #42
 TURNS    RESW    1
 CURRENT  RESW    1
 indev    byte    x'F3'
 OUTDEV   BYTE    X'05'
+label    org
+label    end
