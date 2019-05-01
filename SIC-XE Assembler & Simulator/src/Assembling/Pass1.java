@@ -238,12 +238,15 @@ public class Pass1 {
             break;
         }
         case "org": {
-            if(operand == null)
-            {
+            if(operand == null) {
                 wr.write("error [98] : 'ORG operation must have an operand'\n");
                 errorFlag = 1;
             } else {
-                LOCCTR = Integer.parseInt(operand.trim(), 16);
+                if (symtbl.get(operand.toLowerCase()) != null) {
+                    LOCCTR = Integer.parseInt(symtbl.get(operand.toLowerCase()).toString(), 16);
+                } else {
+                    LOCCTR = Integer.parseInt(operand.trim(), 16);
+                }
             }
             if (label.length > 0) {
                 wr.write("error [05] : 'ORG operation can not have a label'\n");
