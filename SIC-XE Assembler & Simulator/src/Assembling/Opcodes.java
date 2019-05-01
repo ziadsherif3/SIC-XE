@@ -3,7 +3,7 @@ package Assembling;
 import java.util.HashMap;
 
 public class Opcodes {
-    public static HashMap optbl = new HashMap<String, String>();
+    public static HashMap<String, String> optbl = new HashMap<String, String>();
 
     public static void initializeTable() {
         optbl.put("ADD", "18");

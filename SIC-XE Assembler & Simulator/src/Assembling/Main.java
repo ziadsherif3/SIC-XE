@@ -7,8 +7,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public class Main {
@@ -19,12 +19,12 @@ public class Main {
         FileReader fr = new FileReader(file);
         BufferedReader br = new BufferedReader(fr);
         BufferedWriter writer = new BufferedWriter(new FileWriter(fileName2));
-        HashMap symtbl = new HashMap<String, Integer>();
-        HashMap littbl = new HashMap<Integer, Integer>();
+        HashMap<String, Integer> symtbl = new HashMap<String, Integer>();
+        HashMap<Integer, Integer> littbl = new HashMap<Integer, Integer>();
         Opcodes.initializeTable();
         Pass1.flow(br, symtbl, writer, littbl);
         writer.write("\nEnd of first pass\n");
-        Set Table = symtbl.entrySet();
+        Set<Map.Entry<String, Integer>> Table = symtbl.entrySet();
         int ite=0;
         String[][] division = new String[Table.size()][2];
         for(Object i : Table)

@@ -67,10 +67,14 @@ public class Pass1 {
     }
 
     @SuppressWarnings("rawtypes")
-	public static int doLine(String line, HashMap symtbl, HashMap littbl, BufferedWriter wr) throws IOException {
+	public static int doLine(String line, HashMap<Object, Object> symtbl, HashMap littbl, BufferedWriter wr) throws IOException {
         String first = line.substring(0, 7);
         String operation;
         String operand;
+        // If longer than 14 and shorter than 17, user entered spaces after character 14. Handle this error.
+        // Who said if else (< 14) means that there will be an operation (something written at char 9).
+        // Boundaries need to be re-checked
+        // For me (Ziad) check msgs
         if (line.length() > 14) {
             operation = line.substring(9, 14).trim().toLowerCase();
             operand = line.substring(17, line.length());
@@ -106,7 +110,8 @@ public class Pass1 {
             if (operand.contains(",")) {
                 twoOperand = 1;
                 operands = operand.split(",");
-                if (operands.length > 1) {
+                // Is it 2 or 1?
+                if (operands.length > 2) {
                     wr.write("error [23] : 'Can not have more than two operands'\n");
                     errorFlag = 1;
                 }
@@ -184,6 +189,17 @@ public class Pass1 {
         }
         case "byte": {
             String words[] = operand.split("\'");
+            if(words.length != 2){
+                wr.write("error [23] : 'Error in operand'\n");
+            }else if(words[0].length() > 1){
+                wr.write("error [23] : 'Error in operand'\n");
+            }else if(Character.toUpperCase(words[0].charAt(0)) == 'X'){
+                for(char c : words[1].toCharArray()){
+                    if(Character.digit(c, 16) == -1){
+                        wr.write("error [23] : 'Error in operand'\n");
+                    }
+                }
+            }
             LOCCTR += words[1].length();
             break;
         }
