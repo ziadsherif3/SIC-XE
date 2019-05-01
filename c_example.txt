@@ -1,18 +1,18 @@
 .2345678901234567890                                              
-         Start   10000
+         Start   0
 prog
 prog     LDX     #0
          LDT     #1
          LDA     #0
-         STA     CURRENT
+         STA     T,A
 PASS     LDCH    STRING,X
          RMO     A,S,T
          LDA     #STRING
-         ADDR    X,A
-         STA     P1
+         ADDR    X,W
+         STA
          ADDR    T,X
          LDCH    STRING,X
-         COMP    EOF
+         +COMP
          JEQ     DONE
          COMPR   A,S
          JLT     LOOP
@@ -52,13 +52,13 @@ WRITE    TD      OUTDEV
 P1       RESX    1
 P2       RESW    1
 TEMP     RESB    1
-I        RESB    1333333
+I        RESB    1
 J        RESB
-STRING   BYTE    C'5319844444444247*'
+STRING   BYTE    Y'5319844444444247*'
 EOF      WORD    #42
 TURNS    RESW    1
 CURRENT  RESW    1
-indev    byte    x'F3'
+indev    byte    x'FZ3'
 OUTDEV   BYTE    X'05'
 label    org
 label    end

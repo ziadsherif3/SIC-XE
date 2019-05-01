@@ -1,103 +1,106 @@
        .2345678901234567890                                              
-error [32] : 'START operand can not be larger than 4 decimal places'
-010000          Start   10000
-010000 prog
+000000          Start   0
+000000 prog
 error [99] : 'There must be an operation in each line'
-010000 prog     LDX     #0
-010003          LDT     #1
-010006          LDA     #0
-010009          STA     CURRENT
-01000C PASS     LDCH    STRING,X
-01000F          RMO     A,S,T
+000000 prog     LDX     #0
+000003          LDT     #1
+000006          LDA     #0
+000009          STA     T,A
+error [97] : 'This instruction can not have two operands unless in case of indexed addressing mode'
+00000C PASS     LDCH    STRING,X
+00000F          RMO     A,S,T
 error [23] : 'Can not have more than two operands'
-010011          LDA     #STRING
+000011          LDA     #STRING
 error [10] : 'Immediate operand is not a number'
-010014          ADDR    X,A
-010016          STA     P1
-010019          ADDR    T,X
-01001B          LDCH    STRING,X
-01001E          COMP    EOF
-010021          JEQ     DONE
-010024          COMPR   A,S
-010026          JLT     LOOP
-010029          J       PASS
-01002C LOOP     LDA     #STRING
+000014          ADDR    X,W
+error [12] : 'Incorrect register address'
+000016          STA
+error [98] : 'Format 3 operations must have an operand'
+000019          ADDR    T,X
+00001B          LDCH    STRING,X
+00001E          +COMP
+error [98] : 'Format 4 operations must have an operand'
+000022          JEQ     DONE
+000025          COMPR   A,S
+000027          JLT     LOOP
+00002A          J       PASS
+00002D LOOP     LDA     #STRING
 error [10] : 'Immediate operand is not a number'
-01002F          ADDR    X,A
-010031          STA     P2
-010034          JSUB    SWAP
-010037          J       PASS
-01003A DONE     SUBR    T,X
-01003C          STX     TURNS
-01003F          LDX     CURRENT
-010042          TIX     TURNS
-010045          STX     CURRENT
-010048          LDX     #0
-01004B          JLT     PASS
-01004E          J       *
+000030          ADDR    X,A
+000032          STA     P2
+000035          JSUB    SWAP
+000038          J       PASS
+00003B DONE     SUBR    T,X
+00003D          STX     TURNS
+000040          LDX     CURRENT
+000043          TIX     TURNS
+000046          STX     CURRENT
+000049          LDX     #0
+00004C          JLT     PASS
+00004F          J       *
        .
-010051 SWAP     LDCH    @P1
-010054          STCH    TEMP
-010057          LDCH    @P2
-01005A          STCH    @P1
-01005D          LDCH    TEMP
-010060          STCH    @P2
-010063          RSUB
+000052 SWAP     LDCH    @P1
+000055          STCH    TEMP
+000058          LDCH    @P2
+00005B          STCH    @P1
+00005E          LDCH    TEMP
+000061          STCH    @P2
+000064          RSUB
        .
-010066 read     td      indev
-010069          jeq     read
-01006C          rd      indev
-01006F          rsub
+000067 read     td      indev
+00006A          jeq     read
+00006D          rd      indev
+000070          rsub
        .
-010072 WRITE    TD      OUTDEV
-010075          JEQ     WRITE
-010078          WD      OUTDEV
-01007B          RSUB
+000073 WRITE    TD      OUTDEV
+000076          JEQ     WRITE
+000079          WD      OUTDEV
+00007C          RSUB
        .
-01007E P1       RESX    1
+00007F P1       RESX    1
 error [08] : 'Unrecognized operation code'
-010081 P2       RESW    1
-010084 TEMP     RESB    1
-010085 I        RESB    1333333
-error [32] : 'RESB operand can not be larger than 4 decimal places'
-1558DA J        RESB
+000082 P2       RESW    1
+000085 TEMP     RESB    1
+000086 I        RESB    1
+000087 J        RESB
 error [30] : 'Using mnemonics as labels is not allowed'
 error [98] : 'RESB operation must have an operand'
-1558DA STRING   BYTE    C'5319844444444247*'
+000087 STRING   BYTE    Y'5319844444444247*'
 error [22] : 'operand must end at 35th character'
-error [31] : 'Length of char string can not exceed 15'
-1558DA EOF      WORD    #42
-1558DD TURNS    RESW    1
-1558E0 CURRENT  RESW    1
-1558E3 indev    byte    x'F3'
-1558E4 OUTDEV   BYTE    X'05'
-1558E5 label    org
+error [29] : 'BYTE operand not a char string or hexadecimal'
+000087 EOF      WORD    #42
+00008A TURNS    RESW    1
+00008D CURRENT  RESW    1
+000090 indev    byte    x'FZ3'
+error [23] : 'Error in operand'
+000092 OUTDEV   BYTE    X'05'
+000093 label    org
 error [98] : 'ORG operation must have an operand'
 error [05] : 'ORG operation can not have a label'
-1558E5 label    end
+000093 label    end
 error [04] : 'duplicate label definition:'  label 'is already defined'
 error [05] : 'END operation can not have a label'
 
 End of first pass
 value         name
 ------------------
-65536        prog
-65548        pass
-65580        loop
-65594        done
-65617        swap
-65638        read
-65650        write
-65662        p1
-65665        p2
-65668        temp
-65669        i
-1399002        string
-1399002        eof
-1399005        turns
-1399008        current
-1399011        indev
-1399012        outdev
-1399013        label
+  0        prog
+ 12        pass
+ 45        loop
+ 59        done
+ 82        swap
+103        read
+115        write
+127        p1
+130        p2
+133        temp
+134        i
+135        string
+135        eof
+138        turns
+141        current
+144        indev
+146        outdev
+147        label
 
 Incomplete Assembly

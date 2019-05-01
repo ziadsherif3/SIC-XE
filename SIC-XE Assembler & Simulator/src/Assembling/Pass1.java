@@ -109,21 +109,23 @@ public class Pass1 {
                 return 0;
         }
         if (operation.charAt(0) == '+') {
-            operation = operation.substring(1, operation.length());
+            operation = operation.toUpperCase().substring(1, operation.length());
             String allowedFrmts = Opcodes.frmttbl.get(operation);
-            if(allowedFrmts.equals(null)){
+            if (allowedFrmts == null) {
                 wr.write("error [08] : 'Unrecognized operation code'\n");
                 errorFlag = 1;
             }
             boolean allowedFrmt4 = false;
-            for(char c : allowedFrmts.toCharArray()){
-                if(c == '4'){
-                    allowedFrmt4 = true;
-                    break;
+            if (allowedFrmts != null) {
+                for (char c : allowedFrmts.toCharArray()) {
+                    if (c == '4') {
+                        allowedFrmt4 = true;
+                        break;
+                    }
                 }
             }
-            if(!allowedFrmt4){
-                wr.write("error [24] : 'Format 4 isn't allowed with this operation'\n");
+            if (!allowedFrmt4) {
+                wr.write("error [24] : 'Format 4 is not allowed with this operation'\n");
                 errorFlag = 1;
             }
             prefixFlag = 1;
@@ -162,6 +164,12 @@ public class Pass1 {
                 // Is it 2 or 1?
                 if (operands.length > 2) {
                     wr.write("error [23] : 'Can not have more than two operands'\n");
+                    errorFlag = 1;
+                }
+                if (!(Opcodes.frmttbl.get(operation.toUpperCase()).equals("2"))
+                        && !operands[1].toLowerCase().equals("x")) {
+                    wr.write(
+                            "error [97] : 'This instruction can not have two operands unless in case of indexed addressing mode'\n");
                     errorFlag = 1;
                 }
             }
@@ -211,6 +219,14 @@ public class Pass1 {
         if (Opcodes.optbl.get(operation.toUpperCase()) == null) {
             wr.write("error [08] : 'Unrecognized operation code'\n");
             errorFlag = 1;
+        }
+        if (Opcodes.frmttbl.get(operation.toUpperCase()) != null) {
+            if (Opcodes.frmttbl.get(operation.toUpperCase()).equals("2")) {
+                if (symtbl.get(operands[0]) == null || symtbl.get(operands[1]) == null) {
+                    wr.write("error [12] : 'Incorrect register address'\n");
+                    errorFlag = 1;
+                }
+            }
         }
         switch (operation) {
         case "rsub": {

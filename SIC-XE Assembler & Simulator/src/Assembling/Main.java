@@ -20,6 +20,7 @@ public class Main {
         BufferedReader br = new BufferedReader(fr);
         BufferedWriter writer = new BufferedWriter(new FileWriter(fileName2));
         HashMap<String, Integer> symtbl = new HashMap<String, Integer>();
+        Main.initializeSymTbl(symtbl);
         HashMap<Integer, Integer> littbl = new HashMap<Integer, Integer>();
         Opcodes.initializeTable();
         Pass1.flow(br, symtbl, writer, littbl);
@@ -34,11 +35,13 @@ public class Main {
         Arrays.sort(division, (a, b) -> Integer.compare(Integer.parseInt(a[1]), Integer.parseInt(b[1])));
         writer.write("value         name\n");
         writer.write("------------------\n");
-        for( String[] x : division)
-        {
-            String str = String.format("%3s",x[1]) +"        " + String.format("%s",x[0]);
-            writer.write(str);
-            writer.write("\n");
+        for (String[] x : division) {
+            if (!(x[0].equals("A") || x[0].equals("X") || x[0].equals("L") || x[0].equals("B") || x[0].equals("S")
+                    || x[0].equals("T") || x[0].equals("F") || x[0].equals("PC") || x[0].equals("SW"))) {
+                String str = String.format("%3s", x[1]) + "        " + String.format("%s", x[0]);
+                writer.write(str);
+                writer.write("\n");
+            }
         }
         Pass2.flow(br, writer);
         if (Pass1.errorFlag != 1) {
@@ -50,6 +53,18 @@ public class Main {
         }
         br.close();
         writer.close();
+    }
+
+    public static void initializeSymTbl(HashMap<String, Integer> symtbl) {
+        symtbl.put("A", 0);
+        symtbl.put("X", 1);
+        symtbl.put("L", 2);
+        symtbl.put("B", 3);
+        symtbl.put("S", 4);
+        symtbl.put("T", 5);
+        symtbl.put("F", 6);
+        symtbl.put("PC", 8);
+        symtbl.put("SW", 9);
     }
 
 }
