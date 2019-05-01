@@ -1,88 +1,91 @@
        .2345678901234567890                                              
-000000          Start
-000000 prog     LDX     #0
-000003          LDT     #1
-000006          LDA     #0
-000009          STA     CURRENT
-00000C PASS     LDCH    STRING,X
-00000F          RMO     A,S
-000011          LDA     #STRING
+error [32] : 'START operand can not be larger than 4 decimal places'
+010000          Start   10000
+010000 prog
+error [99] : 'There must be an operation in each line'
+010000 prog     LDX     #0
+010003          LDT     #1
+010006          LDA     #0
+010009          STA     CURRENT
+01000C PASS     LDCH    STRING,X
+01000F          RMO     A,S
+010011          LDA     #STRING
 error [10] : 'Immediate operand is not a number'
-000014          ADDR    X,A
-000016          STA     P1
-000019          ADDR    T,X
-00001B          LDCH    STRING,X
-00001E          COMP    EOF
-000021          JEQ     DONE
-000024          COMPR   A,S
-000026          JLT     LOOP
-000029          J       PASS
-00002C LOOP     LDA     #STRING
+010014          ADDR    X,A
+010016          STA     P1
+010019          ADDR    T,X
+01001B          LDCH    STRING,X
+01001E          COMP    EOF
+010021          JEQ     DONE
+010024          COMPR   A,S
+010026          JLT     LOOP
+010029          J       PASS
+01002C LOOP     LDA     #STRING
 error [10] : 'Immediate operand is not a number'
-00002F          ADDR    X,A
-000031          STA     P2
-000034          JSUB    SWAP
-000037          J       PASS
-00003A DONE     SUBR    T,X
-00003C          STX     TURNS
-00003F          LDX     CURRENT
-000042          TIX     TURNS
-000045          STX     CURRENT
-000048          LDX     #0
-00004B          JLT     PASS
-00004E          J       *
+01002F          ADDR    X,A
+010031          STA     P2
+010034          JSUB    SWAP
+010037          J       PASS
+01003A DONE     SUBR    T,X
+01003C          STX     TURNS
+01003F          LDX     CURRENT
+010042          TIX     TURNS
+010045          STX     CURRENT
+010048          LDX     #0
+01004B          JLT     PASS
+01004E          J       *
        .
-000051 SWAP     LDCH    @P1
-000054          STCH    TEMP
-000057          LDCH    @P2
-00005A          STCH    @P1
-00005D          LDCH    TEMP
-000060          STCH    @P2
-000063          RSUB
+010051 SWAP     LDCH    @P1
+010054          STCH    TEMP
+010057          LDCH    @P2
+01005A          STCH    @P1
+01005D          LDCH    TEMP
+010060          STCH    @P2
+010063          RSUB
        .
-000066 read     td      indev
-000069          jeq     read
-00006C          rd      indev
-00006F          rsub
+010066 read     td      indev
+010069          jeq     read
+01006C          rd      indev
+01006F          rsub
        .
-000072 WRITE    TD      OUTDEV
-000075          JEQ     WRITE
-000078          WD      OUTDEV
-00007B          RSUB
+010072 WRITE    TD      OUTDEV
+010075          JEQ     WRITE
+010078          WD      OUTDEV
+01007B          RSUB
        .
-00007E P1       RESW    1
-000081 P2       RESW    1
-000084 TEMP     RESB    1
-000085 I        RESB    1
-000086 J        RESB    1
+01007E P1       RESW    1
+010081 P2       RESW    1
+010084 TEMP     RESB    1
+010085 I        RESB    1
+010086 J        RESB    1
 error [30] : 'Using mnemonics as labels is not allowed'
-000087 STRING   BYTE    C'53198247*'
-000090 EOF      WORD    #42
-000093 TURNS    RESW    1
-000096 CURRENT  RESW    1
-000099 indev    byte    x'F3'
-00009A OUTDEV   BYTE    X'05'
-00009B          end     prog
+010087 STRING   BYTE    C'53198247*'
+010090 EOF      WORD    #42
+010093 TURNS    RESW    1
+010096 CURRENT  RESW    1
+010099 indev    byte    x'F3'
+01009A OUTDEV   BYTE    X'05'
+error [13] : 'missing END statement' '
 
 End of first pass
 value         name
 ------------------
-  0        prog
- 12        pass
- 44        loop
- 58        done
- 81        swap
-102        read
-114        write
-126        p1
-129        p2
-132        temp
-133        i
-135        string
-144        eof
-147        turns
-150        current
-153        indev
-154        outdev
+65536        prog
+65548        pass
+65580        loop
+65594        done
+65617        swap
+65638        read
+65650        write
+65662        p1
+65665        p2
+65668        temp
+65669        i
+65671        string
+65680        eof
+65683        turns
+65686        current
+65689        indev
+65690        outdev
 
 Incomplete Assembly

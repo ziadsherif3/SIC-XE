@@ -1,5 +1,6 @@
 .2345678901234567890                                              
-         Start
+         Start   10000
+prog
 prog     LDX     #0
          LDT     #1
          LDA     #0
@@ -59,4 +60,3 @@ TURNS    RESW    1
 CURRENT  RESW    1
 indev    byte    x'F3'
 OUTDEV   BYTE    X'05'
-         end     prog

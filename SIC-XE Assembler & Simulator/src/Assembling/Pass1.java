@@ -79,7 +79,15 @@ public class Pass1 {
     @SuppressWarnings("rawtypes")
     public static int doLine(String line, HashMap<Object, Object> symtbl, HashMap littbl, BufferedWriter wr)
             throws IOException {
-        String first = line.substring(0, 7);
+        String first = null;
+        try {
+            first = line.substring(0, 7);
+        } catch (Exception e) {
+
+            wr.write("error [99] : 'There must be an operation in each line'\n");
+            errorFlag = 1;
+            return 0;
+        }
         String operation;
         String operand;
         // If longer than 14 and shorter than 17, user entered spaces after character
