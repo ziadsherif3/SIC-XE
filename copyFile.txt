@@ -23,6 +23,8 @@ prog     LDA     beta
 .                                                                 
 Beta     word    9
 Gamma    word    2
+hf       byte    c'helllo'
+hd       byte    x'AB35'
 alpha    resw    1
 delta    resw    1
          end     prog

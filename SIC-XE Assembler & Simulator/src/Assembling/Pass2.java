@@ -88,14 +88,23 @@ public class Pass2 {
         }
         switch (operation) {
         case "word": {
-
+            wr.write(Pass1.hexafy(Integer.parseInt(operands[0])) + "\n");
         }
         case "byte": {
-
+            String words[] = operands[0].split("\'");
+            if (words[0].equals("x")) {
+                wr.write(words[1].toUpperCase());
+            } else if (words[0].equals("c")) {
+                for (int i=0;i<words[1].length();i++) {
+                    char c = words[1].charAt(i);
+                    int ascii = c;
+                    wr.write(Integer.toHexString((int)ascii).toUpperCase());
+                }
+            }
+            wr.write("\n");
         }
         }
         twoOperand = false;
         return 0;
     }
-
 }
