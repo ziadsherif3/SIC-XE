@@ -15,10 +15,14 @@ public class Main {
     public static void main(String[] args) throws IOException {
         String fileName = "c_example.txt";
         String fileName2 = "b_example.txt";
+        String fileName3 = "obj_file.txt";
+        String fileName4 = "copyFile.txt";
         File file = new File(fileName);
         FileReader fr = new FileReader(file);
         BufferedReader br = new BufferedReader(fr);
+        BufferedReader objbr = new BufferedReader(new FileReader(new File(fileName4)));
         BufferedWriter writer = new BufferedWriter(new FileWriter(fileName2));
+        BufferedWriter objwriter = new BufferedWriter(new FileWriter(fileName3));
         HashMap<String, Integer> symtbl = new HashMap<String, Integer>();
         Main.initializeSymTbl(symtbl);
         HashMap<Integer, Integer> littbl = new HashMap<Integer, Integer>();
@@ -43,7 +47,7 @@ public class Main {
                 writer.write("\n");
             }
         }
-        Pass2.flow(br, writer);
+        Pass2.flow(objbr, objwriter, symtbl);
         if (Pass1.errorFlag != 1) {
             writer.write("\nSuccsessful Assembly");
         }
@@ -53,6 +57,7 @@ public class Main {
         }
         br.close();
         writer.close();
+        objwriter.close();
     }
 
     public static void initializeSymTbl(HashMap<String, Integer> symtbl) {
