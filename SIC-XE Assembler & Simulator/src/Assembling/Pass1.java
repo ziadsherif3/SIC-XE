@@ -81,7 +81,7 @@ public class Pass1 {
             throws IOException {
         String first = null;
         try {
-            first = line.substring(0, 7);
+            first = line.substring(0, 8);
         } catch (Exception e) {
 
             wr.write("error [99] : 'There must be an operation in each line'\n");
@@ -97,7 +97,7 @@ public class Pass1 {
         // Boundaries need to be re-checked
         // For me (Ziad) check msgs
         if (line.length() > 17) {
-            operation = line.substring(9, 14).trim().toLowerCase();
+            operation = line.substring(9, 15).trim().toLowerCase();
             operand = line.substring(17, line.length());
         } else if (line.length() > 9){
             operation = line.substring(9, line.length()).toLowerCase();

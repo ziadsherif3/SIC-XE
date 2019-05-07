@@ -12,7 +12,7 @@ public class Opcodes {
         optbl.put("ADDF", "58");
         optbl.put("ADDR", "90");
         optbl.put("AND", "40");
-        optbl.put("CLEAR", "4");
+        optbl.put("CLEAR", "B4");
         optbl.put("COMP", "28");
         optbl.put("COMPF", "88");
         optbl.put("COMPR", "A0");

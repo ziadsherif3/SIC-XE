@@ -1,62 +1,28 @@
 .2345678901234567890                                              
          Start   0
-prog     LDX     #0
-         LDT     #1
-         LDA     #0
-         STA     CURRENT
-PASS     LDCH    STRING,X
-         RMO     A,S
-         LDA     #STRING
-         ADDR    X,A
-         STA     P1
-         ADDR    T,X
-         LDCH    STRING,X
-         COMP    EOF
-         JEQ     DONE
-         COMPR   A,S
-         JLT     LOOP
-         J       PASS
-LOOP     LDA     #STRING
-         ADDR    X,A
-         STA     P2
-         JSUB    SWAP
-         J       PASS
-DONE     SUBR    T,X
-         STX     TURNS
-         LDX     CURRENT
-         TIX     TURNS
-         STX     CURRENT
-         LDX     #0
-         JLT     PASS
+prog     LDA     beta                                     
+         LDS     gamma                           
+         DIVR    S,A
+         STA     alpha
+         MULR    S,A
+         HIO
+         RMO     T,X
+         +LDX    beta
+         SVC     2
+         SVC     4
+         TIXR    A
+         TIXR    X
+         SHIFTR  X,3
+         SHIFTL  A,2
+         CLEAR   A
+         CLEAR   B
+         LDS     beta
+         SUBR    A,S
+         STS     delta
          J       *
-.
-SWAP     LDCH    @P1
-         STCH    TEMP
-         LDCH    @P2
-         STCH    @P1
-         LDCH    TEMP
-         STCH    @P2
-         RSUB
-.
-read     td      indev
-         jeq     read
-         rd      indev
-         rsub
-.
-WRITE    TD      OUTDEV
-         JEQ     WRITE
-         WD      OUTDEV
-         RSUB
-.
-P1       RESW    1
-P2       RESW    1
-TEMP     RESB    1
-I        RESB    1
-J        RESB    1
-STRING   BYTE    C'53198247*'
-EOF      WORD    #42
-TURNS    RESW    1
-CURRENT  RESW    1
-indev    byte    x'F3'
-OUTDEV   BYTE    X'05'
+.                                                                 
+Beta     word    9
+Gamma    word    2
+alpha    resw    1
+delta    resw    1
          end     prog
