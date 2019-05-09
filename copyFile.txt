@@ -1,9 +1,9 @@
 .2345678901234567890                                              
          Start   0
-prog     LDA     beta                                     
-         LDS     gamma                           
+prog     LDA     gamma                                     
+         LDS     =W'12'                           
          DIVR    S,A
-         STA     alpha
+         STA     gamma
          MULR    S,A
          HIO
          RMO     T,X
@@ -16,15 +16,19 @@ prog     LDA     beta
          SHIFTL  A,2
          CLEAR   A
          CLEAR   B
-         LDS     beta
+         LDS     =W'9'
          SUBR    A,S
          STS     delta
          J       *
 .                                                                 
 Beta     word    9
 Gamma    word    2
-hf       byte    c'helllo'
+hf       byte    c'hello'
 hd       byte    x'AB35'
 alpha    resw    1
 delta    resw    1
+boyyy    resb    2
+         base    #beta
+         nobase
+six      equ     6
          end     prog

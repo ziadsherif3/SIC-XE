@@ -222,9 +222,11 @@ public class Pass1 {
         }
         if (Opcodes.frmttbl.get(operation.toUpperCase()) != null) {
             if (Opcodes.frmttbl.get(operation.toUpperCase()).equals("2")) {
-                if (symtbl.get(operands[0]) == null || symtbl.get(operands[1]) == null) {
-                    wr.write("error [12] : 'Incorrect register address'\n");
-                    errorFlag = 1;
+                if (twoOperand == 1) {
+                    if (symtbl.get(operands[0]) == null && symtbl.get(operands[1]) == null) {
+                        wr.write("error [12] : 'Incorrect register address'\n");
+                        errorFlag = 1;
+                    }
                 }
             }
         }
@@ -351,15 +353,16 @@ public class Pass1 {
         }
         default: {
             if (operand != null) {
-                if (operand.charAt(0) == '#') {
+                if (operand.charAt(0) == '=') {
+                    String [] words = new String[2];
                     try {
-                        operand = operand.substring(1, operand.length());
-                        Integer.parseInt(operand, 16);
+                        words = operand.split("\'");
+                        Integer.parseInt(words[1], 16);
                     } catch (Exception e) {
-                        wr.write("error [10] : 'Immediate operand is not a number'\n");
+                        wr.write("error [10] : ' Literal is not a number'\n");
                         errorFlag = 1;
                     }
-                    littbl.putIfAbsent(LOCCTR, operand.subSequence(1, operand.length()));
+                    littbl.putIfAbsent(LOCCTR,Integer.parseInt(words[1]));
                 } else {
                     int n = 1;
                     if (twoOperand == 1) {

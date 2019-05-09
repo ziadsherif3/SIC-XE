@@ -4,29 +4,40 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class Pass2 {
     public static boolean twoOperand = false;
+    public static boolean baseOn = false;
+    public static int baseOperand;
 
-    public static void flow(BufferedReader br, BufferedWriter wr, HashMap symtbl) throws IOException {
+    public static void flow(BufferedReader br, BufferedWriter wr, HashMap symtbl, HashMap littbl) throws IOException {
         String line = br.readLine();
         int num;
         while ((line = br.readLine()) != null) {
             while (line.charAt(0) == '.') {
                 line = br.readLine();
             }
-            num = doLine(line, wr, symtbl);
+            num = doLine(line, wr, symtbl, littbl);
             if (num == 1) {
+                Set<Map.Entry<Integer, Integer>> Table = littbl.entrySet();
+                int ite = 0;
+                String[][] division = new String[Table.size()][2];
+                for (Object i : Table) {
+                    division[ite] = i.toString().split("=");
+                    wr.write(Pass1.hexafy(Integer.parseInt(division[ite++][1])) + "\n");
+                }
                 if (line.length() > 14) {
 
                     String opnd = line.substring(17, line.length()).trim();
                     if (symtbl.get(opnd) == null) {
-                        wr.write("E" + Pass1.hexafy(Integer.parseInt(opnd)));
+                        wr.write("E" + Pass1.hexafy(Integer.parseInt(opnd)) + "\n");
                     } else {
-                        wr.write("E" + Pass1.hexafy(Integer.parseInt(symtbl.get(opnd).toString())));
+                        wr.write("E" + Pass1.hexafy(Integer.parseInt(symtbl.get(opnd).toString())) + "\n");
                     }
                 } else {
-                    wr.write("E");
+                    wr.write("E" + "\n");
                 }
                 break;
             }
@@ -35,7 +46,7 @@ public class Pass2 {
 
     }
 
-    public static int doLine(String line, BufferedWriter wr, HashMap symtbl) throws IOException {
+    public static int doLine(String line, BufferedWriter wr, HashMap symtbl, HashMap littbl) throws IOException {
         String label = line.substring(0, 8).trim().toLowerCase();
         String operation;
         String operand;
@@ -89,19 +100,30 @@ public class Pass2 {
         switch (operation) {
         case "word": {
             wr.write(Pass1.hexafy(Integer.parseInt(operands[0])) + "\n");
+            break;
         }
         case "byte": {
             String words[] = operands[0].split("\'");
             if (words[0].equals("x")) {
                 wr.write(words[1].toUpperCase());
             } else if (words[0].equals("c")) {
-                for (int i=0;i<words[1].length();i++) {
+                for (int i = 0; i < words[1].length(); i++) {
                     char c = words[1].charAt(i);
                     int ascii = c;
-                    wr.write(Integer.toHexString((int)ascii).toUpperCase());
+                    wr.write(Integer.toHexString((int) ascii).toUpperCase());
                 }
             }
             wr.write("\n");
+            break;
+        }
+        case "base": {
+            baseOn = true;
+            baseOperand = Integer.parseInt(symtbl.get(operand.substring(1, operand.length())).toString());
+            break;
+        }
+        case "nobase": {
+            baseOn = false;
+            break;
         }
         }
         twoOperand = false;

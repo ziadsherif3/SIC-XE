@@ -47,7 +47,7 @@ public class Main {
                 writer.write("\n");
             }
         }
-        Pass2.flow(objbr, objwriter, symtbl);
+        Pass2.flow(objbr, objwriter, symtbl, littbl);
         if (Pass1.errorFlag != 1) {
             writer.write("\nSuccsessful Assembly");
         }

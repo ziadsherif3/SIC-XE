@@ -1,88 +1,52 @@
        .2345678901234567890                                              
 000000          Start   0
-000000 prog     LDX     #0
-000003          LDT     #1
-000006          LDA     #0
-000009          STA     CURRENT
-00000C PASS     LDCH    STRING,X
-00000F          RMO     A,S
-000011          LDA     #STRING
-error [10] : 'Immediate operand is not a number'
-000014          ADDR    X,A
-000016          STA     P1
-000019          ADDR    T,X
-00001B          LDCH    STRING,X
-00001E          COMP    EOF
-000021          JEQ     DONE
-000024          COMPR   A,S
-000026          JLT     LOOP
-000029          J       PASS
-00002C LOOP     LDA     #STRING
-error [10] : 'Immediate operand is not a number'
-00002F          ADDR    X,A
-000031          STA     P2
-000034          JSUB    SWAP
-000037          J       PASS
-00003A DONE     SUBR    T,X
-00003C          STX     TURNS
-00003F          LDX     CURRENT
-000042          TIX     TURNS
-000045          STX     CURRENT
-000048          LDX     #0
-00004B          JLT     PASS
-00004E          J       *
-       .
-000051 SWAP     LDCH    @P1
-000054          STCH    TEMP
-000057          LDCH    @P2
-00005A          STCH    @P1
-00005D          LDCH    TEMP
-000060          STCH    @P2
-000063          RSUB
-       .
-000066 read     td      indev
-000069          jeq     read
-00006C          rd      indev
-00006F          rsub
-       .
-000072 WRITE    TD      OUTDEV
-000075          JEQ     WRITE
-000078          WD      OUTDEV
-00007B          RSUB
-       .
-00007E P1       RESW    1
-000081 P2       RESW    1
-000084 TEMP     RESB    1
-000085 I        RESB    1
-000086 J        RESB    1
-error [30] : 'Using mnemonics as labels is not allowed'
-000087 STRING   BYTE    C'53198247*'
-000090 EOF      WORD    #42
-000093 TURNS    RESW    1
-000096 CURRENT  RESW    1
-000099 indev    byte    x'F3'
-00009A OUTDEV   BYTE    X'05'
-00009B          end     prog
+000000 prog     LDA     gamma                                     
+error [22] : 'operand must end at 35th character'
+000003          LDS     =W'12'                           
+error [22] : 'operand must end at 35th character'
+000006          DIVR    S,A
+000008          STA     gamma
+00000B          MULR    S,A
+00000D          HIO
+00000E          RMO     T,X
+000010          +LDX    beta
+000014          SVC     2
+000017          SVC     4
+00001A          TIXR    A
+00001C          TIXR    X
+00001E          SHIFTR  X,3
+000020          SHIFTL  A,2
+000022          CLEAR   A
+000024          CLEAR   B
+000026          LDS     =W'9'
+000029          SUBR    A,S
+00002B          STS     delta
+00002E          J       *
+       .                                                                 
+000031 Beta     word    9
+000034 Gamma    word    2
+000037 hf       byte    c'hello'
+00003C hd       byte    x'AB35'
+00003E alpha    resw    1
+000041 delta    resw    1
+000044 boyyy    resb    2
+000046          base    #beta
+000049          nobase
+error [98] : 'Format 3 operations must have an operand'
+00004C six      equ     6
+00004C          end     prog
 
 End of first pass
 value         name
 ------------------
   0        prog
- 12        pass
- 44        loop
- 58        done
- 81        swap
-102        read
-114        write
-126        p1
-129        p2
-132        temp
-133        i
-135        string
-144        eof
-147        turns
-150        current
-153        indev
-154        outdev
+  6        six
+ 49        beta
+ 52        gamma
+ 55        hf
+ 60        hd
+ 62        alpha
+ 65        delta
+ 68        boyyy
 
 Incomplete Assembly
