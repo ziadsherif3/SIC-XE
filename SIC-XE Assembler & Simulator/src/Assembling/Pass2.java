@@ -11,6 +11,12 @@ public class Pass2 {
     public static boolean twoOperand = false;
     public static boolean baseOn = false;
     public static int baseOperand;
+    public static byte n;
+    public static byte i;
+    public static byte x;
+    public static byte b;
+    public static byte p;
+    public static byte e; 
 
     public static void flow(BufferedReader br, BufferedWriter wr, HashMap symtbl, HashMap littbl) throws IOException {
         String line = br.readLine();
@@ -74,7 +80,7 @@ public class Pass2 {
             if (frmt.equals("1")) {
                 wr.write(Opcodes.optbl.get(operation.toUpperCase()).toString() + "\n");
             }
-            if (frmt.equals("2")) {
+            else if (frmt.equals("2")) {
                 int n = 1;
                 if (twoOperand) {
                     n = 2;
@@ -95,6 +101,12 @@ public class Pass2 {
                     wr.write('0');
                 }
                 wr.write("\n");
+            }
+            else if(frmt.equals("3,4")){
+                wr.write(Opcodes.optbl.get(operation.toUpperCase()));
+                if(operation.charAt(0) == '+'){
+
+                }
             }
         }
         switch (operation) {
