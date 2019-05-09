@@ -1,9 +1,7 @@
        .2345678901234567890                                              
 000000          Start   0
-000000 prog     LDA     gamma                                     
-error [22] : 'operand must end at 35th character'
-000003          LDS     =W'12'                           
-error [22] : 'operand must end at 35th character'
+000000 prog     LDA     gamma
+000003          LDS     =W'12'
 000006          DIVR    S,A
 000008          STA     gamma
 00000B          MULR    S,A

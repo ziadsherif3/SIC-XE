@@ -1,7 +1,7 @@
 .2345678901234567890                                              
          Start   0
 prog     LDA     gamma                                     
-         LDS     =W'12'                           
+         LDS     =W'12'
          DIVR    S,A
          STA     gamma
          MULR    S,A

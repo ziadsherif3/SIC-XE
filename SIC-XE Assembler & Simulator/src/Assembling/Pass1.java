@@ -1,8 +1,10 @@
 package Assembling;
 
+import java.awt.List;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Pass1 {
@@ -10,6 +12,8 @@ public class Pass1 {
     public static int errorFlag = 0;
     public static int prefixFlag = 0;
     public static int twoOperand = 0;
+    public static ArrayList<Integer> memArray = new ArrayList<>();
+    public static ArrayList<Integer> litarray = new ArrayList<>();
 
     public Pass1() {
     }
@@ -45,6 +49,7 @@ public class Pass1 {
                 LOCCTR = Integer.parseInt(operand.trim(), 16);
             }
             wr.write(hexafy(LOCCTR) + ' ' + line + '\n');
+            memArray.add(LOCCTR);
         } else {
             num = doLine(line, symtbl, littbl, wr);
         }
@@ -60,6 +65,7 @@ public class Pass1 {
                 line = br.readLine();
             }
             wr.write(hexafy(LOCCTR) + ' ' + line + '\n');
+            memArray.add(LOCCTR);
             num = doLine(line, symtbl, littbl, wr);
             if (num == 1) {
                 flag = 1;
@@ -71,6 +77,10 @@ public class Pass1 {
             errorFlag = 1;
         }
         // assign storage locations to literals in pool
+        for( int i : litarray) {
+            littbl.putIfAbsent(i, LOCCTR);
+            LOCCTR += 3;
+        }
         // reset copy file
 
         return;
@@ -362,7 +372,7 @@ public class Pass1 {
                         wr.write("error [10] : ' Literal is not a number'\n");
                         errorFlag = 1;
                     }
-                    littbl.putIfAbsent(LOCCTR,Integer.parseInt(words[1]));
+                    litarray.add(Integer.parseInt(words[1]));
                 } else {
                     int n = 1;
                     if (twoOperand == 1) {

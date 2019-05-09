@@ -20,9 +20,9 @@ public class Main {
         File file = new File(fileName);
         FileReader fr = new FileReader(file);
         BufferedReader br = new BufferedReader(fr);
-        BufferedReader objbr = new BufferedReader(new FileReader(new File(fileName4)));
         BufferedWriter writer = new BufferedWriter(new FileWriter(fileName2));
         BufferedWriter objwriter = new BufferedWriter(new FileWriter(fileName3));
+        BufferedReader objbr = new BufferedReader(new FileReader(new File(fileName4)));
         HashMap<String, Integer> symtbl = new HashMap<String, Integer>();
         Main.initializeSymTbl(symtbl);
         HashMap<Integer, Integer> littbl = new HashMap<Integer, Integer>();
