@@ -26,7 +26,7 @@ public class Pass2 {
             wr.write("T" + stored + "^" + newHexafy(concatObj.length()/2, 2) + "^"
                     + concatObj + "\n");
             concatObj = "";
-            stored = Pass1.hexafy(Pass1.memArray.get(counter));
+            stored = Pass1.hexafy(Pass1.memArray.get(counter-1));
         }
         concatObj += newStr;
     }
