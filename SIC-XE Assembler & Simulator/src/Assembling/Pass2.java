@@ -19,11 +19,22 @@ public class Pass2 {
     public static byte p;
     public static byte e;
 
+    public static String newHexafy(int num, int len) {
+        String str = Integer.toHexString(num).toUpperCase();
+        while (str.length() < len) {
+            str = '0' + str;
+        }
+        if(str.length() > len) {
+            str = str.substring( str.length() - len ,str.length());
+        }
+        return str.toUpperCase();
+    }
+
     public static void flow(BufferedReader br, BufferedWriter wr, HashMap symtbl, HashMap littbl) throws IOException {
-        String line = br.readLine();
+        String line;
         int num;
         while ((line = br.readLine()) != null) {
-            while (line.charAt(0) == '.' || line.charAt(1) == 'r'){
+            while (line.charAt(0) == '.') {
                 line = br.readLine();
             }
             num = doLine(line, wr, symtbl, littbl);
@@ -33,7 +44,7 @@ public class Pass2 {
                 String[][] division = new String[Table.size()][2];
                 for (Object i : Table) {
                     division[ite] = i.toString().split("=");
-                    wr.write(Pass1.hexafy(Integer.parseInt(division[ite++][1])) + "\n");
+                    wr.write(Pass1.hexafy(Integer.parseInt(division[ite++][0])) + "\n");
                 }
                 if (line.length() > 14) {
 
@@ -77,10 +88,10 @@ public class Pass2 {
         if (operation.equals("end")) {
             return 1;
         }
-        
+
         if (operation.charAt(0) == '+') {
             e = 1;
-            operation = operation.substring(1,operation.length());
+            operation = operation.substring(1, operation.length());
         } else {
             e = 0;
         }
@@ -109,7 +120,9 @@ public class Pass2 {
                     wr.write('0');
                 }
                 wr.write("\n");
-            } else if (frmt.equals("3,4")) {
+            }else if(operation.equals("rsub")) {
+                wr.write("4F0000\n");
+            } else if (frmt.equals("3,4") && !operation.equals("rsub")) {
                 int disp;
                 if (operand.charAt(0) == '#') {
                     n = 0;
@@ -121,7 +134,7 @@ public class Pass2 {
                 } else {
                     i = 1;
                 }
-                if (twoOperand && operands[1].equals("X")) {
+                if (twoOperand && operands[1].toUpperCase().equals("X")) {
                     x = 1;
                 } else {
                     x = 0;
@@ -135,31 +148,54 @@ public class Pass2 {
                     } else {
                         Integer.parseInt(operand);
                     }
-                    disp = Integer.parseInt(operand);  
+                    disp = Integer.parseInt(operand);
                     b = 0;
                     p = 0;
                 } catch (Exception e) {
-                    p = 1;
+                    p = 0;
                     if (operand.charAt(0) == '=') {
                         String[] words = operand.split("\'");
-                        disp = Integer.parseInt(littbl.get(Integer.parseInt(words[1])).toString()) - locctr;
+                        disp = Integer.parseInt(littbl.get(Integer.parseInt(words[1])).toString());
                     } else if (operand.charAt(0) == '*') {
                         disp = locctr;
                     } else {
-                        disp = Integer.parseInt(symtbl.get(operand).toString()) - locctr;
+                        if(twoOperand){
+                            operand=operands[0];
+                        }
+                        disp = Integer.parseInt(symtbl.get(operand).toString());
+                    }
+                    if (disp > 255) {
+                        disp = disp - locctr - 3;
+                        p = 1;
+                    }
+                    if (operand.charAt(0) == '*' && disp > 255) {
+                        disp = -3;
+                        p = 1;
                     }
                 }
-                if(Math.abs(disp) > 2048){
-                    p=0;
-                    b=1;
+                if (Math.abs(disp) > 2048) {
+                    p = 0;
+                    b = 1;
                     disp = Integer.parseInt(symtbl.get(operand).toString()) - baseOperand;
                 }
-                if(e == 1){
-                    b=0;
-                    p=0;
-                    disp= Integer.parseInt(symtbl.get(operand).toString());
+                if (e == 1) {
+                    b = 0;
+                    p = 0;
+                    disp = Integer.parseInt(symtbl.get(operand).toString());
                 }
-                System.out.println(line + n + i +x+b+p+e);
+                int temp = Integer.parseInt(Opcodes.optbl.get(operation.toUpperCase()), 16) + (n * 2) + i;
+                wr.write(Pass2.newHexafy(temp, 2));
+                System.out.println(operation+n+i+x+b+p+e);
+                if (e == 0) {
+                    temp = e * (int) Math.pow(2, 0) + p * (int) Math.pow(2, 1) + b * (int) Math.pow(2, 2)
+                            + x * (int) Math.pow(2, 3);
+                } else {
+                    temp = e * (int) Math.pow(2, 0) + p * (int) Math.pow(2, 1) + b * (int) Math.pow(2, 2)
+                            + x * (int) Math.pow(2, 3);
+                }
+                wr.write(Pass2.newHexafy(temp, 1));
+                wr.write(Pass2.newHexafy(disp, 3) + "\n");
+
             }
         }
         switch (operation) {

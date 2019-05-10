@@ -22,7 +22,7 @@ public class Main {
         BufferedReader br = new BufferedReader(fr);
         BufferedWriter writer = new BufferedWriter(new FileWriter(fileName2));
         BufferedWriter objwriter = new BufferedWriter(new FileWriter(fileName3));
-        BufferedReader objbr = new BufferedReader(new FileReader(new File(fileName4)));
+        BufferedReader objbr = new BufferedReader(new FileReader(new File(fileName)));
         HashMap<String, Integer> symtbl = new HashMap<String, Integer>();
         Main.initializeSymTbl(symtbl);
         HashMap<Integer, Integer> littbl = new HashMap<Integer, Integer>();

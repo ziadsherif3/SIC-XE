@@ -361,6 +361,12 @@ public class Pass1 {
             LOCCTR += 3 * Integer.parseInt(operand);
             break;
         }
+        case "nobase": {
+            break;
+        }
+        case "base": {
+            break;
+        }
         default: {
             if (operand != null) {
                 if (operand.charAt(0) == '=') {
@@ -409,7 +415,7 @@ public class Pass1 {
             } else if (operation.equals("subr") || operation.equals("addr") || operation.equals("mulr")
                     || operation.equals("clear") || operation.equals("compr") || operation.equals("divr")
                     || operation.equals("rmo") || operation.equals("shiftr") || operation.equals("shiftl")
-                    || operation.equals("sivc") || operation.equals("tixr")) {
+                    || operation.equals("svc") || operation.equals("tixr")) {
                 {
                     if (operand == null) {
                         wr.write("error [98] : 'Format 2 operations must have an operand'\n");

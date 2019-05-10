@@ -1,50 +1,88 @@
        .2345678901234567890                                              
-000000          Start   0
-000000 prog     LDA     gamma
-000003          LDS     =W'12'
-000006          DIVR    S,A
-000008          STA     gamma
-00000B          MULR    S,A
-00000D          HIO
-00000E          RMO     T,X
-000010          +LDX    beta
-000014          SVC     2
-000017          SVC     4
-00001A          TIXR    A
-00001C          TIXR    X
-00001E          SHIFTR  X,3
-000020          SHIFTL  A,2
-000022          CLEAR   A
-000024          CLEAR   B
-000026          LDS     =W'9'
-000029          SUBR    A,S
-00002B          STS     delta
-00002E          J       *
-       .                                                                 
-000031 Beta     word    9
-000034 Gamma    word    2
-000037 hf       byte    c'hello'
-00003C hd       byte    x'AB35'
-00003E alpha    resw    1
-000041 delta    resw    1
-000044 boyyy    resb    2
-000046          base    #beta
-000049          nobase
-error [98] : 'Format 3 operations must have an operand'
-00004C six      equ     6
-00004C          end     prog
+001000          Start   1000
+001000 prog     LDX     #0
+001003          LDT     #1
+001006          LDA     #0
+001009          STA     CURRENT
+00100C PASS     LDCH    STRING,X
+00100F          RMO     A,S
+001011          LDA     #STRING
+001014          ADDR    X,A
+001016          STA     P1
+001019          ADDR    T,X
+00101B          LDCH    STRING,X
+00101E          COMP    EOF
+001021          JEQ     DONE
+001024          COMPR   A,S
+001026          JLT     LOOP
+001029          J       PASS
+00102C LOOP     LDA     #STRING
+00102F          ADDR    X,A
+001031          STA     P2
+001034          JSUB    SWAP
+001037          J       PASS
+00103A DONE     SUBR    T,X
+00103C          STX     TURNS
+00103F          LDX     CURRENT
+001042          TIX     TURNS
+001045          STX     CURRENT
+001048          LDX     #0
+00104B          JLT     PASS
+00104E          J       *
+       .
+001051 SWAP     LDCH    @P1
+001054          STCH    TEMP
+001057          LDCH    @P2
+00105A          STCH    @P1
+00105D          LDCH    TEMP
+001060          STCH    @P2
+001063          RSUB
+       .
+001066 read     td      indev
+001069          jeq     read
+00106C          rd      indev
+00106F          rsub        
+error [21] : '1st character of operand can not be blank'
+error [06] : 'RSUB operation can not have an operand'
+       .
+001072 WRITE    TD      OUTDEV
+001075          JEQ     WRITE
+001078          WD      OUTDEV
+00107B          RSUB
+       .
+00107E P1       RESW    1
+001081 P2       RESW    1
+001084 TEMP     RESB    1
+001085 I        RESB    1
+001086 J        RESB    1
+error [30] : 'Using mnemonics as labels is not allowed'
+001087 STRING   BYTE    C'53198247*'
+001090 EOF      WORD    42
+001093 TURNS    RESW    1
+001096 CURRENT  RESW    1
+001099 indev    byte    x'F3'
+00109A OUTDEV   BYTE    X'05'
+00109B          end     prog
 
 End of first pass
 value         name
 ------------------
-  0        prog
-  6        six
- 49        beta
- 52        gamma
- 55        hf
- 60        hd
- 62        alpha
- 65        delta
- 68        boyyy
+4096        prog
+4108        pass
+4140        loop
+4154        done
+4177        swap
+4198        read
+4210        write
+4222        p1
+4225        p2
+4228        temp
+4229        i
+4231        string
+4240        eof
+4243        turns
+4246        current
+4249        indev
+4250        outdev
 
 Incomplete Assembly
