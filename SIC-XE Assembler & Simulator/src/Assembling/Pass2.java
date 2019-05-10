@@ -119,18 +119,19 @@ public class Pass2 {
                 if (twoOperand) {
                     n = 2;
                 }
-                recordHandler(wr, Opcodes.optbl.get(operation.toUpperCase()));
+                String tempr = "";
                 for (int i = 0; i < n; i++) {
                     if (symtbl.get(operands[i].toUpperCase()) != null) {
-                        recordHandler(wr, symtbl.get(operands[i].toUpperCase()).toString());
+                                tempr += symtbl.get(operands[i].toUpperCase()).toString();
                     } else {
                         if (operation.equals("shiftl") || operation.equals("shiftr")) {
-                            recordHandler(wr, Integer.toString(Integer.parseInt(operands[i]) - 1));
+                                    tempr += Integer.toString(Integer.parseInt(operands[i]) - 1);
                         } else {
-                            recordHandler(wr, operands[i]);
+                            tempr += operands[i];
                         }
                     }
                 }
+                recordHandler(wr, Opcodes.optbl.get(operation.toUpperCase()) + tempr);
                 if (n == 1) {
                     recordHandler(wr, "0");
                 }
@@ -198,16 +199,15 @@ public class Pass2 {
                     disp = Integer.parseInt(symtbl.get(operand).toString());
                 }
                 int temp = Integer.parseInt(Opcodes.optbl.get(operation.toUpperCase()), 16) + (n * 2) + i;
-                recordHandler(wr, Pass2.newHexafy(temp, 2));
+                int temp2;
                 if (e == 0) {
-                    temp = e * (int) Math.pow(2, 0) + p * (int) Math.pow(2, 1) + b * (int) Math.pow(2, 2)
+                    temp2 = e * (int) Math.pow(2, 0) + p * (int) Math.pow(2, 1) + b * (int) Math.pow(2, 2)
                             + x * (int) Math.pow(2, 3);
                 } else {
-                    temp = e * (int) Math.pow(2, 0) + p * (int) Math.pow(2, 1) + b * (int) Math.pow(2, 2)
+                    temp2 = e * (int) Math.pow(2, 0) + p * (int) Math.pow(2, 1) + b * (int) Math.pow(2, 2)
                             + x * (int) Math.pow(2, 3);
                 }
-                recordHandler(wr, Pass2.newHexafy(temp, 1));
-                recordHandler(wr, Pass2.newHexafy(disp, 3));
+                recordHandler(wr, newHexafy(temp, 2) + newHexafy(temp2, 1) + newHexafy(disp, 3));
 
             }
         }
@@ -221,11 +221,13 @@ public class Pass2 {
             if (words[0].equals("x")) {
                 recordHandler(wr, words[1].toUpperCase());
             } else if (words[0].equals("c")) {
+                String tempoo= "";
                 for (int i = 0; i < words[1].length(); i++) {
                     char c = words[1].charAt(i);
                     int ascii = c;
-                    recordHandler(wr, Integer.toHexString((int) ascii).toUpperCase());
+                    tempoo += Integer.toHexString((int) ascii).toUpperCase();
                 }
+                recordHandler(wr, tempoo);
             }
             break;
         }

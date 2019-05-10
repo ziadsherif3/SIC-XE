@@ -1,6 +1,5 @@
 package Assembling;
 
-import java.awt.List;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;

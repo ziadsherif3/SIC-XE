@@ -16,7 +16,6 @@ public class Main {
         String fileName = "c_example.txt";
         String fileName2 = "b_example.txt";
         String fileName3 = "obj_file.txt";
-        String fileName4 = "copyFile.txt";
         File file = new File(fileName);
         FileReader fr = new FileReader(file);
         BufferedReader br = new BufferedReader(fr);
