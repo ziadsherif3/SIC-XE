@@ -10,6 +10,8 @@ import java.util.Set;
 public class Pass2 {
     public static boolean twoOperand = false;
     public static boolean baseOn = false;
+    public static String concatObj ="";
+    public static String stored;
     public static int baseOperand;
     public static int counter = 0;
     public static byte n;
@@ -18,6 +20,16 @@ public class Pass2 {
     public static byte b;
     public static byte p;
     public static byte e;
+
+    public static void recordHandler(BufferedWriter wr, String newStr) throws IOException {
+        if (concatObj.length() + newStr.length() > 60) {
+            wr.write("T" + stored + "^" + newHexafy(concatObj.length()/2, 2) + "^"
+                    + concatObj + "\n");
+            concatObj = "";
+            stored = Pass1.hexafy(Pass1.memArray.get(counter));
+        }
+        concatObj += newStr;
+    }
 
     public static String newHexafy(int num, int len) {
         String str = Integer.toHexString(num).toUpperCase();
@@ -33,6 +45,8 @@ public class Pass2 {
     public static void flow(BufferedReader br, BufferedWriter wr, HashMap symtbl, HashMap littbl) throws IOException {
         String line;
         int num;
+        wr.write("H" + Pass1.progName + "^" + Pass1.startAddrss + "^" + Pass1.hexafy(Pass1.progLen) + "\n");
+        stored = Pass1.hexafy(Pass1.memArray.get(counter));
         while ((line = br.readLine()) != null) {
             while (line.charAt(0) == '.') {
                 line = br.readLine();
@@ -44,8 +58,9 @@ public class Pass2 {
                 String[][] division = new String[Table.size()][2];
                 for (Object i : Table) {
                     division[ite] = i.toString().split("=");
-                    wr.write(Pass1.hexafy(Integer.parseInt(division[ite++][0])) + "\n");
+                    recordHandler(wr, Pass1.hexafy(Integer.parseInt(division[ite++][0])));
                 }
+                wr.write("T" + stored + "^" + newHexafy(concatObj.length() / 2, 2) + "^" + concatObj + "\n");
                 if (line.length() > 14) {
 
                     String opnd = line.substring(17, line.length()).trim();
@@ -98,30 +113,29 @@ public class Pass2 {
         if (Opcodes.frmttbl.get(operation.toUpperCase()) != null) {
             String frmt = Opcodes.frmttbl.get(operation.toUpperCase());
             if (frmt.equals("1")) {
-                wr.write(Opcodes.optbl.get(operation.toUpperCase()).toString() + "\n");
+                recordHandler(wr, Opcodes.optbl.get(operation.toUpperCase()).toString());
             } else if (frmt.equals("2")) {
                 int n = 1;
                 if (twoOperand) {
                     n = 2;
                 }
-                wr.write(Opcodes.optbl.get(operation.toUpperCase()));
+                recordHandler(wr, Opcodes.optbl.get(operation.toUpperCase()));
                 for (int i = 0; i < n; i++) {
                     if (symtbl.get(operands[i].toUpperCase()) != null) {
-                        wr.write(symtbl.get(operands[i].toUpperCase()).toString());
+                        recordHandler(wr, symtbl.get(operands[i].toUpperCase()).toString());
                     } else {
                         if (operation.equals("shiftl") || operation.equals("shiftr")) {
-                            wr.write(Integer.toString(Integer.parseInt(operands[i]) - 1));
+                            recordHandler(wr, Integer.toString(Integer.parseInt(operands[i]) - 1));
                         } else {
-                            wr.write(operands[i]);
+                            recordHandler(wr, operands[i]);
                         }
                     }
                 }
                 if (n == 1) {
-                    wr.write('0');
+                    recordHandler(wr, "0");
                 }
-                wr.write("\n");
             }else if(operation.equals("rsub")) {
-                wr.write("4F0000\n");
+                recordHandler(wr, "4F0000");
             } else if (frmt.equals("3,4") && !operation.equals("rsub")) {
                 int disp;
                 if (operand.charAt(0) == '#') {
@@ -184,8 +198,7 @@ public class Pass2 {
                     disp = Integer.parseInt(symtbl.get(operand).toString());
                 }
                 int temp = Integer.parseInt(Opcodes.optbl.get(operation.toUpperCase()), 16) + (n * 2) + i;
-                wr.write(Pass2.newHexafy(temp, 2));
-                System.out.println(operation+n+i+x+b+p+e);
+                recordHandler(wr, Pass2.newHexafy(temp, 2));
                 if (e == 0) {
                     temp = e * (int) Math.pow(2, 0) + p * (int) Math.pow(2, 1) + b * (int) Math.pow(2, 2)
                             + x * (int) Math.pow(2, 3);
@@ -193,28 +206,27 @@ public class Pass2 {
                     temp = e * (int) Math.pow(2, 0) + p * (int) Math.pow(2, 1) + b * (int) Math.pow(2, 2)
                             + x * (int) Math.pow(2, 3);
                 }
-                wr.write(Pass2.newHexafy(temp, 1));
-                wr.write(Pass2.newHexafy(disp, 3) + "\n");
+                recordHandler(wr, Pass2.newHexafy(temp, 1));
+                recordHandler(wr, Pass2.newHexafy(disp, 3));
 
             }
         }
         switch (operation) {
         case "word": {
-            wr.write(Pass1.hexafy(Integer.parseInt(operands[0])) + "\n");
+            recordHandler(wr, Pass1.hexafy(Integer.parseInt(operands[0])));
             break;
         }
         case "byte": {
             String words[] = operands[0].split("\'");
             if (words[0].equals("x")) {
-                wr.write(words[1].toUpperCase());
+                recordHandler(wr, words[1].toUpperCase());
             } else if (words[0].equals("c")) {
                 for (int i = 0; i < words[1].length(); i++) {
                     char c = words[1].charAt(i);
                     int ascii = c;
-                    wr.write(Integer.toHexString((int) ascii).toUpperCase());
+                    recordHandler(wr, Integer.toHexString((int) ascii).toUpperCase());
                 }
             }
-            wr.write("\n");
             break;
         }
         case "base": {

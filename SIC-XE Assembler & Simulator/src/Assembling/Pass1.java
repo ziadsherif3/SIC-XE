@@ -9,6 +9,9 @@ import java.util.HashMap;
 
 public class Pass1 {
     public static int LOCCTR = 0;
+    public static String progName;
+    public static String startAddrss;
+    public static int progLen = -1;
     public static int errorFlag = 0;
     public static int prefixFlag = 0;
     public static int twoOperand = 0;
@@ -41,12 +44,14 @@ public class Pass1 {
             operand = line.substring(17, line.length());
         }
         if (operation.equals("start")) {
+            progName = line.substring(0,8);
             if (operand != null) {
                 if (operand.length() > 4) {
                     wr.write("error [32] : 'START operand can not be larger than 4 decimal places'\n");
                     errorFlag = 1;
                 }
                 LOCCTR = Integer.parseInt(operand.trim(), 16);
+                startAddrss = hexafy(LOCCTR);
             }
             wr.write(hexafy(LOCCTR) + ' ' + line + '\n');
             memArray.add(LOCCTR);
@@ -243,6 +248,7 @@ public class Pass1 {
         switch (operation) {
         case "rsub": {
             LOCCTR += 3;
+            progLen += 3;
             if (operand != null) {
                 wr.write("error [06] : 'RSUB operation can not have an operand'\n");
                 errorFlag = 1;
@@ -277,6 +283,7 @@ public class Pass1 {
                     errorFlag = 1;
                 }
                 LOCCTR += Integer.parseInt(operand);
+                progLen += Integer.parseInt(operand);
             }
             break;
         }
@@ -318,6 +325,7 @@ public class Pass1 {
                     errorFlag = 1;
                 } else {
                     LOCCTR += words[1].length();
+                    progLen += words[1].length();
                 }
             } else if (words[0].toLowerCase().charAt(0) == 'x') {
                 if (words[1].length() > 14) {
@@ -325,6 +333,7 @@ public class Pass1 {
                     errorFlag = 1;
                 } else {
                     LOCCTR += (words[1].length() + 1) / 2;
+                    progLen += (words[1].length() + 1) / 2;
                 }
             } else {
                 wr.write("error [29] : 'BYTE operand not a char string or hexadecimal'\n");
@@ -345,6 +354,7 @@ public class Pass1 {
                 errorFlag = 1; 
             }
             LOCCTR += 3;
+            progLen += 3;
             break;
         }
         case "resw": {
@@ -359,6 +369,7 @@ public class Pass1 {
                 errorFlag = 1; 
             }
             LOCCTR += 3 * Integer.parseInt(operand);
+            progLen += 3 * Integer.parseInt(operand);
             break;
         }
         case "nobase": {
@@ -406,6 +417,7 @@ public class Pass1 {
                     || operation.equals("norm") || operation.equals("sio") || operation.equals("tio")) {
                 {
                     LOCCTR += 1;
+                    progLen += 1;
                     if (prefixFlag == 1) {
                         wr.write("error [07] : 'type 1 format operation can not have a + prefix'\n");
                         errorFlag = 1;
@@ -422,6 +434,7 @@ public class Pass1 {
                         errorFlag = 1;
                     }
                     LOCCTR += 2;
+                    progLen += 2;
                     if (prefixFlag == 1) {
                         wr.write("error [07] : 'type 2 format operation can not have a + prefix'\n");
                         errorFlag = 1;
@@ -434,12 +447,14 @@ public class Pass1 {
                     errorFlag = 1;
                 }
                 LOCCTR += 4;
+                progLen += 4;
             } else {
                 if (operand == null) {
                     wr.write("error [98] : 'Format 3 operations must have an operand'\n");
                     errorFlag = 1;
                 }
                 LOCCTR += 3;
+                progLen += 3;
             }
             break;
         }
