@@ -196,7 +196,15 @@ public class Pass2 {
                 if (e == 1) {
                     b = 0;
                     p = 0;
-                    disp = Integer.parseInt(symtbl.get(operand).toString());
+                    if (operand.charAt(0) == '#') {
+                        System.out.println("yes");
+                    }
+                    if (symtbl.get(operand) != null) {
+                        String store = symtbl.get(operand).toString();
+                        disp = Integer.parseInt(store);
+                    } else {
+                        disp = Integer.parseInt(operand);
+                    }
                 }
                 int temp = Integer.parseInt(Opcodes.optbl.get(operation.toUpperCase()), 16) + (n * 2) + i;
                 int temp2;

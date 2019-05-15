@@ -1,88 +1,76 @@
        .2345678901234567890                                              
 001000          Start   1000
 001000 prog     LDX     #0
-001003          LDT     #1
-001006          LDA     #0
-001009          STA     CURRENT
-00100C PASS     LDCH    STRING,X
-00100F          RMO     A,S
-001011          LDA     #STRING
-001014          ADDR    X,A
-001016          STA     P1
-001019          ADDR    T,X
-00101B          LDCH    STRING,X
-00101E          COMP    EOF
-001021          JEQ     DONE
-001024          COMPR   A,S
-001026          JLT     LOOP
-001029          J       PASS
-00102C LOOP     LDA     #STRING
-00102F          ADDR    X,A
-001031          STA     P2
-001034          JSUB    SWAP
-001037          J       PASS
-00103A DONE     SUBR    T,X
-00103C          STX     TURNS
-00103F          LDX     CURRENT
-001042          TIX     TURNS
-001045          STX     CURRENT
-001048          LDX     #0
-00104B          JLT     PASS
-00104E          J       *
+001003          +LDT    #1
+001007          ADDR    X,T
+001009          LDA     #0
+       . comment line         
+00100C          STA     CURRENT
+00100F PASS     LDCH    STRING,X
+001012          RMO     A,S
+001014          LDA     #STRING
+001017          ADDR    X,A
+001019          STA     P1
+00101C          ADDR    T,X
+00101E PASS     LDCH    STRING,X
+error [04] : 'duplicate label definition:'  PASS 'is already defined'
+001021          COMP    EOF
+001024          JLT     PASS
+001027          J       *
        .
-001051 SWAP     LDCH    @P1
-001054          STCH    TEMP
-001057          LDCH    @P2
-00105A          STCH    @P1
-00105D          LDCH    TEMP
-001060          STCH    @P2
-001063          RSUB
+00102A SWAP     LDCH    @P1
+00102D          STCH    TEMP
+001030          LDCH    @P2
+001033          STCH    @P1
+001036          LDCH    TEMP
+001039          STCH    @P2
+00103C          RSUB
        .
-001066 read     td      indev
-001069          jeq     read
-00106C          rd      indev
-00106F          rsub        
+00103F read     td      indev
+001042          jeq     read
+001045          rd      indev
+001048          rsub        
 error [21] : '1st character of operand can not be blank'
 error [06] : 'RSUB operation can not have an operand'
        .
-001072 WRITE    TD      OUTDEV
-001075          JEQ     WRITE
-001078          WD      OUTDEV
-00107B          RSUB
+00104B WRITE    TD      OUTDEV
+00104E          JEQ     WRITE
+001051          WD      OUTDEV
+001054          RSUB
        .
-00107E P1       RESW    1
-001081 P2       RESW    1
-001084 TEMP     RESB    1
-001085 I        RESB    1
-001086 J        RESB    1
+001057 P1       RESW    1
+00105A P2       RESW    1
+00105D TEMP     RESB    1
+00105E I        RESB    1
+00105F J        RESB    1
 error [30] : 'Using mnemonics as labels is not allowed'
-001087 STRING   BYTE    C'53198247*'
-001090 EOF      WORD    42
-001093 TURNS    RESW    1
-001096 CURRENT  RESW    1
-001099 indev    byte    x'F3'
-00109A OUTDEV   BYTE    X'05'
-00109B          end     prog
+001060 STRING   BYTE    C'53198247*'
+001069 EOF      WORD    42
+00106C TURNS    RESW    1
+00106F CURRENT  RESW    1
+001072 indev    byte    x'F3'
+001073 OUTDEV   BYTE    X'05'
+001074 label    end     prog
+error [05] : 'END operation can not have a label'
 
 End of first pass
 value         name
 ------------------
 4096        prog
-4108        pass
-4140        loop
-4154        done
-4177        swap
-4198        read
-4210        write
-4222        p1
-4225        p2
-4228        temp
-4229        i
-4231        string
-4240        eof
-4243        turns
-4246        current
-4249        indev
-4250        outdev
+4111        pass
+4138        swap
+4159        read
+4171        write
+4183        p1
+4186        p2
+4189        temp
+4190        i
+4192        string
+4201        eof
+4204        turns
+4207        current
+4210        indev
+4211        outdev
+4212        label
 
 Incomplete Assembly

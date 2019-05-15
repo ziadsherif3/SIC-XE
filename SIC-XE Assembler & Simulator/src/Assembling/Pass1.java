@@ -168,7 +168,7 @@ public class Pass1 {
         }
         String label[] = first.split(" ");
         if (label.length > 0) {
-            Object in = symtbl.get(label[0]);
+            Object in = symtbl.get(label[0].toLowerCase());
             //if the label doesn't exist in symbol table
             if (in == null) {
                //check the optable for current label name
