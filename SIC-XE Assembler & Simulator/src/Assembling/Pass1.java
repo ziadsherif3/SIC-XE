@@ -354,9 +354,9 @@ public class Pass1 {
                 wr.write("error [98] : 'EQU operation must have an operand'\n");
                 errorFlag = 1;
             }
-            //bassem fill this
+            //removes the label that was linked to the current LOCCTR and equates it with the operand
         	symtbl.remove(label[0]);
-            symtbl.putIfAbsent(label[0].toLowerCase(), operand);
+            symtbl.putIfAbsent(label[0].toLowerCase(), symtbl.get(operand));
             break;
         }
         case "byte": {
