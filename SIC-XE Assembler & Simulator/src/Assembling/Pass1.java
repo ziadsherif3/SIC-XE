@@ -14,6 +14,7 @@ public class Pass1 {
     public static int errorFlag = 0;
     public static int prefixFlag = 0;
     public static int twoOperand = 0;
+    public static boolean dontIncrmnt = false;
     //Array List of LOCCTR for all instructions
     public static ArrayList<Integer> memArray = new ArrayList<>();
     //Array List of Literals
@@ -143,13 +144,14 @@ public class Pass1 {
                 errorFlag = 1;
                 return 0;
         }
-        //bassem fill this
+        //if there is a + make sure the operation is allowed to be used as format 4
         if (operation.charAt(0) == '+') {
             operation = operation.toUpperCase().substring(1, operation.length());
             String allowedFrmts = Opcodes.frmttbl.get(operation);
             if (allowedFrmts == null) {
                 wr.write("error [08] : 'Unrecognized operation code'\n");
                 errorFlag = 1;
+                dontIncrmnt = true;
             }
             boolean allowedFrmt4 = false;
             if (allowedFrmts != null) {
@@ -285,6 +287,7 @@ public class Pass1 {
         if (Opcodes.optbl.get(operation.toUpperCase()) == null) {
             wr.write("error [08] : 'Unrecognized operation code'\n");
             errorFlag = 1;
+            dontIncrmnt = true;
         }
         if (Opcodes.frmttbl.get(operation.toUpperCase()) != null) {
             if (Opcodes.frmttbl.get(operation.toUpperCase()).equals("2")) {
@@ -423,7 +426,7 @@ public class Pass1 {
                 wr.write("error [98] : 'WORD operation must have an operand'\n");
                 errorFlag = 1;
             }
-            //bassem fill this
+            //remove the negative sign from the value
         	operand = operand.replace("-", "");
             //
         	//check if WORD operand is larger than 4 decimal places, print error if so
@@ -461,14 +464,14 @@ public class Pass1 {
             break;
         }
         default: {
-            //bassem fill this, msh fahm l literal ana
+            //get literal and add it to the array
         	if (operand != null) {
                 if (operand.charAt(0) == '=') {
                     String [] words = new String[2];
                     try {
                         words = operand.split("\'");
                         Integer.parseInt(words[1], 16);
-                    } catch (Exception e) {
+                    } catch (Exception e) {//make sure the literal can be parsed
                         wr.write("error [10] : ' Literal is not a number'\n");
                         errorFlag = 1;
                     }
@@ -547,8 +550,10 @@ public class Pass1 {
                     wr.write("error [98] : 'Format 3 operations must have an operand'\n");
                     errorFlag = 1;
                 }
-                LOCCTR += 3;
-                progLen += 3;
+                if (!dontIncrmnt) {
+                    LOCCTR += 3;
+                    progLen += 3;
+                }
             }
             break;
         }
