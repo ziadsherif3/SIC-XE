@@ -314,11 +314,11 @@ public class Pass1 {
                 wr.write("error [98] : 'ORG operation must have an operand'\n");
                 errorFlag = 1;
             } else {
-               //bassem fill this
+               //if ORG had a label as its operand, get its resmebling LOCCTR
             	if (symtbl.get(operand.toLowerCase()) != null) {
                     LOCCTR = Integer.parseInt(symtbl.get(operand.toLowerCase()).toString(), 16);
                 } 
-            	//bassem fill this
+            	//else if ORG had the required LOCCTR directly as its operand, use it
             	else {
                     LOCCTR = Integer.parseInt(operand.trim(), 16);
                 }
