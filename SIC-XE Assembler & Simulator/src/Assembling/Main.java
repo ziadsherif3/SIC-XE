@@ -47,7 +47,7 @@ public class Main {
             }
         }
         Pass2.flow(objbr, objwriter, symtbl, littbl);
-        if (Pass1.errorFlag != 1) {
+        if (Pass1.unSuccessful != true) {
             writer.write("\nSuccsessful Assembly");
         }
         else {

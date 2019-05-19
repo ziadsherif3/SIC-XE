@@ -1,19 +1,32 @@
 .2345678901234567890                                              
-         Start   1000
+         Start   0
 prog     LDX     #0
-         +LDT    #1
-         ADDR    X,T
+         LDT     #1
          LDA     #0
-. comment line         
-         STA     CURRENT
+         STA     CURRE   NT
 PASS     LDCH    STRING,X
          RMO     A,S
          LDA     #STRING
          ADDR    X,A
          STA     P1
          ADDR    T,X
-PASS     LDCH    STRING,X
+         LDCH    STRING,X
          COMP    EOF
+         JEQ     DONE
+         COMPR   A,S
+         JLT     LOOP
+         J       PASS
+LOOP     LDA     #STRING
+         ADDR    X,A
+         STA     P2
+         JSUB    SWAP
+         J       PASS
+DONE     SUBR    T,X
+         STX     TURNS
+         LDX     CURRENT
+         TIX     TURNS
+         STX     CURRENT
+         LDX     #0
          JLT     PASS
          J       *
 .
@@ -23,12 +36,12 @@ SWAP     LDCH    @P1
          STCH    @P1
          LDCH    TEMP
          STCH    @P2
-         RSUB
+         rsub
 .
 read     td      indev
          jeq     read
          rd      indev
-         rsub        
+         rsub
 .
 WRITE    TD      OUTDEV
          JEQ     WRITE
@@ -46,4 +59,4 @@ TURNS    RESW    1
 CURRENT  RESW    1
 indev    byte    x'F3'
 OUTDEV   BYTE    X'05'
-label    end     prog
+         end     prog

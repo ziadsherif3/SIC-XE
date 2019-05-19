@@ -8,15 +8,19 @@ import java.util.HashMap;
 
 public class Pass1 {
     public static int LOCCTR = 0;
+    public static int litOrg = 0;
     public static String progName;
     public static String startAddrss;
     public static int progLen = -1;
     public static int errorFlag = 0;
+    public static boolean unSuccessful= false;
     public static int prefixFlag = 0;
     public static int twoOperand = 0;
     public static boolean dontIncrmnt = false;
     //Array List of LOCCTR for all instructions
     public static ArrayList<Integer> memArray = new ArrayList<>();
+    //Array List of LOCCTR for all instructions that have errors
+    public static ArrayList<Integer> errArray = new ArrayList<>();
     //Array List of Literals
     public static ArrayList<Integer> litarray = new ArrayList<>();
 
@@ -88,6 +92,11 @@ public class Pass1 {
             wr.write(hexafy(LOCCTR) + ' ' + line + '\n');
             memArray.add(LOCCTR);
             num = doLine(line, symtbl, littbl, wr);
+            if( errorFlag == 1) {
+                unSuccessful = true;
+                errArray.add(memArray.get(memArray.size()-1));
+                errorFlag = 0;
+            }
             if (num == 1) {
                 flag = 1;
                 break;
@@ -100,7 +109,8 @@ public class Pass1 {
             errorFlag = 1;
         }
         // assign storage locations to literals in pool
-        for( int i : litarray) {
+        LOCCTR += litOrg;
+        for (int i : litarray) {
             littbl.putIfAbsent(i, LOCCTR);
             LOCCTR += 3;
         }
@@ -308,6 +318,14 @@ public class Pass1 {
             if (operand != null) {
                 wr.write("error [06] : 'RSUB operation can not have an operand'\n");
                 errorFlag = 1;
+            }
+            break;
+        }
+        case "ltorg":{
+            if(symtbl.get(operand.toLowerCase())!=null) {
+                litOrg = Integer.parseInt(symtbl.get(operand.toLowerCase()).toString(), 16);
+            } else {
+                litOrg = Integer.parseInt(operand, 16);
             }
             break;
         }

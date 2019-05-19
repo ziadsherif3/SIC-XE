@@ -14,6 +14,7 @@ public class Pass2 {
     public static String stored;
     public static int baseOperand;
     public static int counter = 0;
+    public static int errCounter = 0;
     public static byte n;
     public static byte i;
     public static byte x;
@@ -84,6 +85,14 @@ public class Pass2 {
         String operation;
         String operand;
         int locctr = Pass1.memArray.get(counter++);
+        if (!Pass1.errArray.isEmpty()) {
+            if (errCounter < Pass1.errArray.size()) {
+                if (locctr == Pass1.errArray.get(errCounter)) {
+                    errCounter++;
+                    return -1;
+                }
+            }
+        }
         if (line.length() > 17) {
             operation = line.substring(9, 15).trim().toLowerCase();
             operand = line.substring(17, line.length()).trim().toLowerCase();
